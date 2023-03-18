@@ -1,13 +1,17 @@
 package subApp;
 
 import dao.AccountDAO;
+import dao.CodeResDAO;
 import model.Account;
+import model.CodeRegister;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class LoginAndRegister {
     private AccountDAO accountDAO = new AccountDAO();
+    private CodeResDAO codeResDAO = new CodeResDAO();
     public boolean loginSuccess = false;
 
     private void login(Scanner in) {
@@ -63,6 +67,7 @@ public class LoginAndRegister {
         String userName = "";
         String passWord = "";
 
+
         List<Account> accountList = accountDAO.getAll();
 
         boolean checkUserName = false;
@@ -86,13 +91,46 @@ public class LoginAndRegister {
             System.out.print("\tNhập PassWord: ");
             passWord = in.nextLine();
 
-            a.setUserName(userName);
-            a.setPassWord(passWord);
-            a.setStatus("onl");
+            Random rd = new Random();
+            int numberCode = rd.nextInt(2000)+1000;
 
-            System.out.print("\tĐăng ký thành công!!! ");
-            accountDAO.insert(a);
-            loginSuccess = true;
+            CodeRegister codeRes = new CodeRegister();
+            codeRes.setUserName(userName);
+            codeRes.setPassWord(passWord);
+            codeRes.setCode(numberCode);
+            codeResDAO.insert(codeRes);
+
+            System.out.print("Mã kích hoạt đã gửi về số điện thoại của hr. Vui lòng nhập mã: ");
+            int code = 0;
+
+            try {
+                code = Integer.parseInt(in.nextLine());
+
+            } catch (Exception e) {
+                System.out.println("Nhập sai định dạng");
+            }
+
+
+            if (userName.equalsIgnoreCase(codeRes.getUserName())
+                    && passWord.equalsIgnoreCase(codeRes.getPassWord())
+                    && code == codeRes.getCode()) {
+
+                codeResDAO.delete(userName);
+
+                a.setUserName(userName);
+                a.setPassWord(passWord);
+                a.setStatus("onl");
+
+                System.out.print("\tĐăng ký thành công!!! ");
+                accountDAO.insert(a);
+                loginSuccess = true;
+            }else{
+                System.out.print("\tNhập mã sai. Đăng ký thất bại!!! ");
+                codeResDAO.delete(userName);
+
+            }
+
+
         }
     }
 
