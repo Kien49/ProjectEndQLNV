@@ -1,6 +1,6 @@
 package model;
 
-public class Staff {
+public class Staff implements Comparable<Staff>{
     private int staffId;
     private String fullName;
     private int gender;
@@ -10,7 +10,7 @@ public class Staff {
     private int salary;
     private int departmentId;
 
-    private Staff(){
+    public Staff(){
 
     }
 
@@ -101,5 +101,14 @@ public class Staff {
                 ", salary=" + salary +
                 ", departmentId=" + departmentId +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Staff o) {
+        if(this.getSalary() < o.getSalary()){
+            return 1;
+        }else if(this.getSalary() > o.getSalary())
+            return -1;
+        return 0;
     }
 }
