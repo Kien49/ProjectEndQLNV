@@ -21,6 +21,7 @@ public class ShowAllStaffAndDept {
             System.out.println("\t1. ID");
             System.out.println("\t2. Theo tên (Bản chữ cái)");
             System.out.println("\t3. Sắp xếp theo lương");
+            System.out.println("\t4. Tìm kiếm 1 nhân viên bất kì theo mã nhân viên");
             System.out.println("\t0. Thoát");
             System.out.printf("\tMời nhập lựa chọn: ");
 
@@ -31,7 +32,7 @@ public class ShowAllStaffAndDept {
                 System.out.println("Nhập sai định dạng");
                 continue;
             }
-            if (option < 0 || option > 3) {
+            if (option < 0 || option > 4) {
                 System.out.println("Lựa chọn không hợp lệ!");
                 continue;
             }
@@ -55,6 +56,25 @@ public class ShowAllStaffAndDept {
                     for (Staff s: staffList) {
                         System.out.println(s);
                     }
+                    break;
+                case 4:
+                    System.out.print("\tNhập mã nhân viên người bạn cần tìm: ");
+                    int id =0;
+                    try {
+                        id = Integer.parseInt(in.nextLine());
+
+                    } catch (Exception e) {
+                        System.out.println("Nhập sai định dạng");
+                        break;
+                    }
+                    Staff sId = staffDAO.getById(id);
+                    if(sId==null){
+                        System.out.println("Không có nhân viên này!!!");
+                    }
+                    else{
+                        System.out.println(sId);
+                    }
+
                     break;
             }
         }

@@ -13,7 +13,7 @@ public class App {
 
     private static void mainMenu(){
         System.out.println("\n--------BẠN HÃY CHỌN ĐIỀU BẠN MONG MUỐN--------");
-        System.out.println("1. Danh sách tất cả nhân viên trong công ty");
+        System.out.println("1. Danh sách tất cả nhân viên trong công ty hoặc tìm kiếm 1 nhân viên bất kỳ");
         System.out.println("2. Danh sách các phòng ban trong công ty");
         System.out.println("3. Thêm, sửa, xóa thông tin cho nhân viên hoặc phòng ban");
         System.out.println("4. Thêm, xóa nhân viên khỏi phòng ban");

@@ -45,4 +45,32 @@ public class StaffDAO {
 
         return staffList;
     }
+
+    public Staff getById(int id) {
+        final String sql = "SELECT * FROM `staff` WHERE  `staff_id` = '" + id + "'";
+        Staff staff = null;
+
+        try {
+            Connection conn = MyConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                staff = new Staff();
+                staff.setStaffId(rs.getInt("staff_id"));
+                staff.setFullName(rs.getString("full_name"));
+                staff.setGender(rs.getInt("gender"));
+                staff.setMail(rs.getString("mail"));
+                staff.setPhone(rs.getString("phone"));
+                staff.setHireDate(rs.getString("hire_date"));
+                staff.setSalary(rs.getInt("salary"));
+                staff.setDepartmentId(rs.getInt("department_id"));
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return staff;
+    }
 }
