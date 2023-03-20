@@ -28,7 +28,7 @@ public class StaffDAO {
                 staff.setFullName(rs.getString("full_name"));
                 staff.setGender(rs.getInt("gender"));
                 staff.setMail(rs.getString("mail"));
-                staff.setPhone(rs.getString("phone"));
+                staff.setPhone(rs.getInt("phone"));
                 staff.setHireDate(rs.getString("hire_date"));
                 staff.setSalary(rs.getInt("salary"));
                 staff.setDepartmentId(rs.getInt("department_id"));
@@ -60,7 +60,7 @@ public class StaffDAO {
                 staff.setFullName(rs.getString("full_name"));
                 staff.setGender(rs.getInt("gender"));
                 staff.setMail(rs.getString("mail"));
-                staff.setPhone(rs.getString("phone"));
+                staff.setPhone(rs.getInt("phone"));
                 staff.setHireDate(rs.getString("hire_date"));
                 staff.setSalary(rs.getInt("salary"));
                 staff.setDepartmentId(rs.getInt("department_id"));
@@ -72,5 +72,38 @@ public class StaffDAO {
             e.printStackTrace();
         }
         return staff;
+    }
+
+    public void insert(Staff s) {
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`, `department_id`) VALUES ('%d','%s','%d','%s', '%s','%s','%d','%d') ",
+                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), s.getHireDate(), s.getSalary(), s.getDepartmentId()
+            );
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void insertDeptIdNull(Staff s) {
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`) VALUES ('%d','%s','%d','%s', '%s','%s','%d') ",
+                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), s.getHireDate(), s.getSalary()
+            );
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -5,6 +5,7 @@ import model.Account;
 import model.Department;
 import model.Staff;
 import subApp.LoginAndRegister;
+import subApp.Option3;
 import subApp.ShowAllStaffAndDept;
 
 import java.util.*;
@@ -26,6 +27,7 @@ public class App {
         System.out.printf("\tMời nhập lựa chọn: ");
     }
 
+
     public static void main(String[] args) {
 
         //Login and Register
@@ -36,6 +38,7 @@ public class App {
         //function after login
 
         ShowAllStaffAndDept opt1A2 = new ShowAllStaffAndDept();
+        Option3 option3 = new Option3();
         if(loginSuccess){
             Scanner in = new Scanner(System.in);
             int option = -1;
@@ -59,6 +62,9 @@ public class App {
                         break;
                     case 2:
                         opt1A2.option2();
+                        break;
+                    case 3:
+                        option3.menu(in);
                         break;
                 }
             }
