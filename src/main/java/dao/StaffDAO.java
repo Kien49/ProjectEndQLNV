@@ -1,7 +1,7 @@
 package dao;
 
 import connection.MyConnection;
-import model.Account;
+import model.Department;
 import model.Staff;
 
 import java.sql.Connection;
@@ -106,4 +106,94 @@ public class StaffDAO {
             e.printStackTrace();
         }
     }
+
+    public void updateIdDeptNull(Staff s, int id) {
+
+        Staff tmp = getById(id);
+        if (tmp == null) {
+            System.out.println("Cập nhật thất bại do không có id = " + id);
+            return;
+        }
+        try {
+            // Buoc 1
+            Connection conn = MyConnection.getConnection();
+            // Buoc 2
+            String sql = String.format("UPDATE `staff` SET `full_name`='%s', `gender`='%d', `mail`='%s', `phone` = '%s',`hire_date` = '%s', `salary` = '%d'  WHERE `staff_id` = '%d'",
+                    s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), s.getHireDate(), s.getSalary(),id
+            );
+
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Cập nhật thất bại");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id) {
+        Staff staff = getById(id);
+        if (staff == null) {
+            throw new RuntimeException("Sinh viên không tồn tại!");
+        }
+
+        final String sql = "DELETE FROM `staff` WHERE  `staff_id` = '" + id + "'";
+        try {
+            Connection conn = MyConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Xoá thất bại");
+            }
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Staff> innerJoinMemberDept(int id) {
+        List<Staff> staffList = new ArrayList<>();
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = "select s.staff_id, s.full_name, s.gender, s.mail, s.phone, s.hire_date, s.salary, d.department_name, d.department_head_id " +
+                    " from staff s " +
+                    " inner join department d " +
+                    " on s.department_id= d.department_id " +
+                    " where s.department_id = '" + id + "'";
+
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Staff staff = new Staff();
+                staff.setStaffId(rs.getInt("s.staff_id"));
+                staff.setFullName(rs.getString("s.full_name"));
+                staff.setGender(rs.getInt("s.gender"));
+                staff.setMail(rs.getString("s.mail"));
+                staff.setPhone(rs.getInt("s.phone"));
+                staff.setHireDate(rs.getString("s.hire_date"));
+                staff.setSalary(rs.getInt("s.salary"));
+                //staff.setDepartmentId(rs.getInt("department_id"));
+                staff.setNameDept(rs.getString("d.department_name"));
+                staff.setLeadDept(rs.getInt("d.department_head_id"));
+
+                staffList.add(staff);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return staffList;
+    }
+
+
 }

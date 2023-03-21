@@ -5,6 +5,10 @@ public class Department {
     private String deptName;
     private int deptHeadId;
 
+    //innerjoin
+    private  String nameLead;
+    private int salaryLead;
+
     public Department(){
 
     }
@@ -45,5 +49,21 @@ public class Department {
                 ", deptName='" + deptName + '\'' +
                 ", deptHeadId=" + deptHeadId +
                 '}';
+    }
+
+    public String getNameLead() {
+        return nameLead;
+    }
+
+    public void setNameLead(String nameLead) {
+        this.nameLead = nameLead;
+    }
+
+    public int getSalaryLead() {
+        return salaryLead;
+    }
+
+    public void setSalaryLead(int salaryLead) {
+        this.salaryLead = salaryLead;
     }
 }

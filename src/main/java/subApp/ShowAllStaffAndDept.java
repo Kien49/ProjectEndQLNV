@@ -59,7 +59,7 @@ public class ShowAllStaffAndDept {
                     break;
                 case 4:
                     System.out.print("\tNhập mã nhân viên người bạn cần tìm: ");
-                    int id =0;
+                    int id ;
                     try {
                         id = Integer.parseInt(in.nextLine());
 

@@ -10,6 +10,26 @@ public class Staff implements Comparable<Staff>{
     private int salary;
     private int departmentId;
 
+    //inner join
+    private String nameDept;
+    private int leadDept;
+
+    public String getNameDept() {
+        return nameDept;
+    }
+
+    public void setNameDept(String nameDept) {
+        this.nameDept = nameDept;
+    }
+
+    public int getLeadDept() {
+        return leadDept;
+    }
+
+    public void setLeadDept(int leadDept) {
+        this.leadDept = leadDept;
+    }
+
     public Staff(){
 
     }
