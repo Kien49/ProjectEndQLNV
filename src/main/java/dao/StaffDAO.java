@@ -148,7 +148,7 @@ public class StaffDAO {
     public void delete(int id) {
         Staff staff = getById(id);
         if (staff == null) {
-            throw new RuntimeException("Sinh viên không tồn tại!");
+            throw new RuntimeException("Nhân viên không tồn tại!");
         }
 
         final String sql = "DELETE FROM `staff` WHERE  `staff_id` = '" + id + "'";

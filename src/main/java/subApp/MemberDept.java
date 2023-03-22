@@ -12,25 +12,19 @@ import java.util.Scanner;
 public class MemberDept {
     private DeptDAO deptDAO = new DeptDAO();
     private StaffDAO staffDAO = new StaffDAO();
-
-    //private List<Department> listDept = deptDAO.getAll();
+    private Util util = new Util();
 
     public void memberDepartment(Scanner in) {
+        List<Department> listDept = deptDAO.getAll();
+        System.out.println("\t\tDanh phòng ban của công ty");
+        int numberDept = util.chooseDepartment(in);
 
-        System.out.print("\t\tNhập mã phòng ban: ");
-        int idDeptScanner;
-        try {
-            idDeptScanner = Integer.parseInt(in.nextLine());
-
-        } catch (Exception e) {
-            System.out.println("Nhập sai định dạng");
+        if(numberDept< 1 || numberDept> listDept.size()){
+            System.out.println("Lựa chọn không hợp lệ!!!");
             return;
         }
-        Department dept = deptDAO.getById(idDeptScanner);
-        if(dept==null){
-            System.out.println("Không có phòng ban này!!!");
-            return;
-        }
+        int idDept = listDept.get(numberDept-1).getDeptId();
+
 
         int option = -1;
 
@@ -51,16 +45,19 @@ public class MemberDept {
                 System.out.println("Lựa chọn không hợp lệ!");
                 continue;
             }
-            List<Staff> staffList = staffDAO.innerJoinMemberDept(idDeptScanner);
+            List<Staff> staffList = staffDAO.innerJoinMemberDept(idDept);
             switch (option) {
                 case 1:
+                    if(staffList.size() == 0){
+                        System.out.println("Phòng này chưa có nhân viên!!!");
+                        break;
+                    }
                     Staff sLead = null;
                     for (Staff s:staffList) {
                         if(s.getStaffId() == s.getLeadDept()){
                             sLead = s;
                         }
                     }
-
                     System.out.format("+----------------------------------------------------------------------------------------------------------------------------------------------------+%n");
                     System.out.format("|                                                        Tất cả nhân viên trong phòng ban                                                            |%n");
                     String leftAlignFormat = "| %-11d | %-22s | %-9d | %-28s | %-25d | %-21s | %-12d | %n";
@@ -81,7 +78,7 @@ public class MemberDept {
                     System.out.println("\tTrưởng phòng là: "+ sLead.getFullName());
                     break;
                 case 2:
-                    System.out.print("Nhập mã nhân viên của trưởng phòng mới: ");
+                    System.out.print("\t\t\t\t\tNhập mã nhân viên của trưởng phòng mới: ");
                     int idLeadNew;
 
                     try {
@@ -104,7 +101,7 @@ public class MemberDept {
                     Department deptChangeLead = new Department();
                     deptChangeLead.setDeptHeadId(idLeadNew);
 
-                    deptDAO.updateIdLead(deptChangeLead, idDeptScanner);
+                    deptDAO.updateIdLead(deptChangeLead, idDept);
                     System.out.println("Đổi trưởng phòng thành công!!!");
                     break;
             }

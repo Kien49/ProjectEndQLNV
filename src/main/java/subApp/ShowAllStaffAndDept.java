@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ShowAllStaffAndDept {
+    private Util util = new Util();
     public void option1(Scanner in) {
         StaffDAO staffDAO= new StaffDAO();
         List<Staff> staffList = staffDAO.getAll();
@@ -59,17 +60,9 @@ public class ShowAllStaffAndDept {
                     break;
                 case 4:
                     System.out.print("\tNhập mã nhân viên người bạn cần tìm: ");
-                    int id ;
-                    try {
-                        id = Integer.parseInt(in.nextLine());
-
-                    } catch (Exception e) {
-                        System.out.println("Nhập sai định dạng");
-                        break;
-                    }
-                    Staff sId = staffDAO.getById(id);
-                    if(sId==null){
-                        System.out.println("Không có nhân viên này!!!");
+                    Staff sId = util.checkStaffId(in);
+                    if(sId == null){
+                        return;
                     }
                     else{
                         System.out.println(sId);

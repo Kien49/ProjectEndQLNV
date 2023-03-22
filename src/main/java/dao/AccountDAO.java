@@ -40,10 +40,6 @@ public class AccountDAO {
     }
 
     public void update(Account account, String userName) {
-        /*Brand b = getById(id);
-        if (b == null) {
-            throw new RuntimeException("Hãng không tồn tại!");
-        }*/
 
         final String sql = String.format(
                 "UPDATE `account` SET `user_name`='%s', `pass_word`='%s', `status`='%s' WHERE `user_name` = '%s'",

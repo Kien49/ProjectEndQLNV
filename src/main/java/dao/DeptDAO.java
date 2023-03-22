@@ -2,11 +2,11 @@ package dao;
 
 import connection.MyConnection;
 import model.Department;
-import model.Staff;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,8 +77,25 @@ public class DeptDAO {
         return deptList;
     }
 
+    public void insert(Department d) {
+        try {
 
-    public Department getById(int id) {
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("insert into `department` (`department_id`,`department_name`) VALUES ('%d','%s') ",
+                    d.getDeptId(), d.getDeptName()
+            );
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*public Department getById(int id) {
         final String sql = "SELECT * FROM `department` WHERE  `department_id` = '" + id + "'";
         Department dept = null;
 
@@ -99,14 +116,9 @@ public class DeptDAO {
             e.printStackTrace();
         }
         return dept;
-    }
+    }*/
 
     public void updateIdLead(Department d, int id) {
-/*        Department tmp = getById(id);
-        if (tmp == null) {
-            System.out.println("Cập nhật thất bại do không có id = " + id);
-            return;
-        }*/
         try {
             Connection conn = MyConnection.getConnection();
             String sql = String.format("UPDATE `department` SET  `department_head_id`='%d'   WHERE `department_id` = '%d'",
@@ -119,6 +131,40 @@ public class DeptDAO {
             if (rs == 0) {
                 System.out.println("Cập nhật thất bại");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void updateIdName(Department d, int id) {
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("UPDATE `department` SET  `department_name`='%s'   WHERE `department_id` = '%d'",
+                    d.getDeptName(),id
+            );
+
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Cập nhật thất bại");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int id) {
+        final String sql = "DELETE FROM `department` WHERE  `department_id` = '" + id + "'";
+        try {
+            Connection conn = MyConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Xoá thất bại");
+            }
+            stmt.close();
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

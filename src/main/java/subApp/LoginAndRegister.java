@@ -14,6 +14,9 @@ public class LoginAndRegister {
     private CodeResDAO codeResDAO = new CodeResDAO();
     public boolean loginSuccess = false;
 
+    public String userNameNow ="";
+    public String passWordNow ="";
+
     private void login(Scanner in) {
         List<Account> accountList = accountDAO.getAll();
 
@@ -44,6 +47,8 @@ public class LoginAndRegister {
                         accountDAO.update(a,a.getUserName());
                         checkOutWhile = false;
                         loginSuccess = true;
+                        userNameNow = userName;
+                        passWordNow = passWord;
                         break;
                     }else if (userName.equalsIgnoreCase(a.getUserName())
                             && passWord.equalsIgnoreCase(a.getPassWord()) && !status.equalsIgnoreCase(a.getStatus()) && checkLoginFalse) {
