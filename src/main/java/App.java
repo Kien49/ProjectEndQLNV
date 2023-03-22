@@ -8,6 +8,10 @@ import subApp.MemberDept;
 import subApp.Option3;
 import subApp.ShowAllStaffAndDept;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class App {
@@ -75,6 +79,27 @@ public class App {
         System.out.printf("\tMời nhập lựa chọn: ");
     }
 
+    private static boolean checkDate(String a, String b){
+        try {
+            Date start = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+                    .parse(a);
+            Date end = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+                    .parse(b);
+
+            System.out.println(start);
+            System.out.println(end);
+
+            if (start.compareTo(end) < 0) {
+                return false;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
 
     public static void main(String[] args) {
 
@@ -123,9 +148,13 @@ public class App {
                     case 6:         //
                         taxOfStaff(in);
                         break;
-                    case 7:
+                    case 7:         //
+                        List<Staff> lastListHireDate =  staffDAO.lastHireDate();
+                        for (Staff s: lastListHireDate) {
+                            System.out.println(s);
+                        }
                         break;
-                    case 8:         //1 nua
+                    case 8:         //
                         memberDept.memberDepartment(in);
                         break;
                     case 9:         //

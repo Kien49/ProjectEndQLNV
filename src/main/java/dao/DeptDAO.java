@@ -2,6 +2,8 @@ package dao;
 
 import connection.MyConnection;
 import model.Department;
+import model.Staff;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -76,7 +78,6 @@ public class DeptDAO {
     }
 
 
-
     public Department getById(int id) {
         final String sql = "SELECT * FROM `department` WHERE  `department_id` = '" + id + "'";
         Department dept = null;
@@ -98,5 +99,28 @@ public class DeptDAO {
             e.printStackTrace();
         }
         return dept;
+    }
+
+    public void updateIdLead(Department d, int id) {
+/*        Department tmp = getById(id);
+        if (tmp == null) {
+            System.out.println("Cập nhật thất bại do không có id = " + id);
+            return;
+        }*/
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("UPDATE `department` SET  `department_head_id`='%d'   WHERE `department_id` = '%d'",
+                    d.getDeptHeadId(),id
+            );
+
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Cập nhật thất bại");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

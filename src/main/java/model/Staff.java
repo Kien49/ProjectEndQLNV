@@ -1,12 +1,14 @@
 package model;
 
+import java.util.Date;
+
 public class Staff implements Comparable<Staff>{
     private int staffId;
     private String fullName;
     private int gender;
     private String mail;
     private int phone;
-    private String hireDate;
+    private Date hireDate;
     private int salary;
     private int departmentId;
 
@@ -34,7 +36,7 @@ public class Staff implements Comparable<Staff>{
 
     }
 
-    public Staff(int staffId, String fullName, int gender, String mail, int phone, String hireDate, int salary, int departmentId) {
+    public Staff(int staffId, String fullName, int gender, String mail, int phone, Date hireDate, int salary, int departmentId) {
         this.staffId = staffId;
         this.fullName = fullName;
         this.gender = gender;
@@ -85,11 +87,11 @@ public class Staff implements Comparable<Staff>{
         this.phone = phone;
     }
 
-    public String getHireDate() {
+    public Date getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(String hireDate) {
+    public void setHireDate(Date hireDate) {
         this.hireDate = hireDate;
     }
 

@@ -7,6 +7,8 @@ import model.Staff;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class StaffDAO {
                 staff.setGender(rs.getInt("gender"));
                 staff.setMail(rs.getString("mail"));
                 staff.setPhone(rs.getInt("phone"));
-                staff.setHireDate(rs.getString("hire_date"));
+                staff.setHireDate(rs.getDate("hire_date"));
                 staff.setSalary(rs.getInt("salary"));
                 staff.setDepartmentId(rs.getInt("department_id"));
 
@@ -61,7 +63,7 @@ public class StaffDAO {
                 staff.setGender(rs.getInt("gender"));
                 staff.setMail(rs.getString("mail"));
                 staff.setPhone(rs.getInt("phone"));
-                staff.setHireDate(rs.getString("hire_date"));
+                staff.setHireDate(rs.getDate("hire_date"));
                 staff.setSalary(rs.getInt("salary"));
                 staff.setDepartmentId(rs.getInt("department_id"));
             }
@@ -76,9 +78,13 @@ public class StaffDAO {
 
     public void insert(Staff s) {
         try {
+            DateFormat dateFormat = null;
+            dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String tmp = dateFormat.format(s.getHireDate());
+
             Connection conn = MyConnection.getConnection();
             String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`, `department_id`) VALUES ('%d','%s','%d','%s', '%s','%s','%d','%d') ",
-                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), s.getHireDate(), s.getSalary(), s.getDepartmentId()
+                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), tmp, s.getSalary(), s.getDepartmentId()
             );
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
@@ -92,9 +98,13 @@ public class StaffDAO {
     }
     public void insertDeptIdNull(Staff s) {
         try {
+            DateFormat dateFormat = null;
+            dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String tmp = dateFormat.format(s.getHireDate());
+
             Connection conn = MyConnection.getConnection();
             String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`) VALUES ('%d','%s','%d','%s', '%s','%s','%d') ",
-                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), s.getHireDate(), s.getSalary()
+                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), tmp, s.getSalary()
             );
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
@@ -115,11 +125,13 @@ public class StaffDAO {
             return;
         }
         try {
-            // Buoc 1
+            DateFormat dateFormat = null;
+            dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String tmpS = dateFormat.format(s.getHireDate());
+
             Connection conn = MyConnection.getConnection();
-            // Buoc 2
             String sql = String.format("UPDATE `staff` SET `full_name`='%s', `gender`='%d', `mail`='%s', `phone` = '%s',`hire_date` = '%s', `salary` = '%d'  WHERE `staff_id` = '%d'",
-                    s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), s.getHireDate(), s.getSalary(),id
+                    s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), tmpS, s.getSalary(),id
             );
 
             Statement stmt = conn.createStatement();
@@ -176,7 +188,7 @@ public class StaffDAO {
                 staff.setGender(rs.getInt("s.gender"));
                 staff.setMail(rs.getString("s.mail"));
                 staff.setPhone(rs.getInt("s.phone"));
-                staff.setHireDate(rs.getString("s.hire_date"));
+                staff.setHireDate(rs.getDate("s.hire_date"));
                 staff.setSalary(rs.getInt("s.salary"));
                 //staff.setDepartmentId(rs.getInt("department_id"));
                 staff.setNameDept(rs.getString("d.department_name"));
@@ -195,5 +207,39 @@ public class StaffDAO {
         return staffList;
     }
 
+    public List<Staff> lastHireDate(){
+        List<Staff> staffList = new ArrayList<>();
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = "select * " +
+                    " from staff " +
+                    " ORDER  BY hire_date DESC limit 5 " ;
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                Staff staff = new Staff();
+                staff.setStaffId(rs.getInt("staff_id"));
+                staff.setFullName(rs.getString("full_name"));
+                staff.setGender(rs.getInt("gender"));
+                staff.setMail(rs.getString("mail"));
+                staff.setPhone(rs.getInt("phone"));
+                staff.setHireDate(rs.getDate("hire_date"));
+                staff.setSalary(rs.getInt("salary"));
+                staff.setDepartmentId(rs.getInt("department_id"));
+
+                staffList.add(staff);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return staffList;
+
+    }
 
 }

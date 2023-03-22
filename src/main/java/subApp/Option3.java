@@ -6,6 +6,9 @@ import model.CodeRegister;
 import model.Department;
 import model.Staff;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -90,12 +93,20 @@ public class Option3 {
             System.out.println("Nhập sai định dạng");
             return;
         }
-        if((dd<0 || dd>31) || (mm<0 || mm>12) || (yy<1900 || yy>2023)){
+        if((dd<0 || dd>28) || (mm<0 || mm>12) || (yy<1900 || yy>2023)){
             System.out.println("Nhập sai ngay thang nam");
             return;
         }
-        String date = null;
-        date = " "+dd+"/"+" "+mm+"/"+" "+yy;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        String dateS = null;
+        dateS = " "+yy+"-"+" "+mm+"-"+" "+dd;
+        Date date = null;
+        try {
+            date = sdf.parse(dateS);
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
         s.setHireDate(date);
 
 
@@ -245,8 +256,16 @@ public class Option3 {
             System.out.println("Nhập sai ngay thang nam");
             return;
         }
-        String date = null;
-        date = " "+dd+"/"+" "+mm+"/"+" "+yy;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        String dateS = null;
+        dateS = " "+yy+"-"+" "+mm+"-"+" "+dd;
+        Date date = null;
+        try {
+            date = sdf.parse(dateS);
+        } catch (ParseException e) {
+
+            e.printStackTrace();
+        }
         s.setHireDate(date);
 
 

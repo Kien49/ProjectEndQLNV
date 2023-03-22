@@ -18,15 +18,15 @@ public class MemberDept {
     public void memberDepartment(Scanner in) {
 
         System.out.print("\t\tNhập mã phòng ban: ");
-        int id;
+        int idDeptScanner;
         try {
-            id = Integer.parseInt(in.nextLine());
+            idDeptScanner = Integer.parseInt(in.nextLine());
 
         } catch (Exception e) {
             System.out.println("Nhập sai định dạng");
             return;
         }
-        Department dept = deptDAO.getById(id);
+        Department dept = deptDAO.getById(idDeptScanner);
         if(dept==null){
             System.out.println("Không có phòng ban này!!!");
             return;
@@ -51,19 +51,18 @@ public class MemberDept {
                 System.out.println("Lựa chọn không hợp lệ!");
                 continue;
             }
+            List<Staff> staffList = staffDAO.innerJoinMemberDept(idDeptScanner);
             switch (option) {
                 case 1:
-                    List<Staff> staffList = staffDAO.innerJoinMemberDept(id);
                     Staff sLead = null;
-
                     for (Staff s:staffList) {
                         if(s.getStaffId() == s.getLeadDept()){
                             sLead = s;
                         }
                     }
 
-                    System.out.format("+------------------------------------------------------------------------------------------------------------------------------------------------+%n");
-                    System.out.format("|                                                        Tất cả nhân viên trong phòng ban                                                        |%n");
+                    System.out.format("+----------------------------------------------------------------------------------------------------------------------------------------------------+%n");
+                    System.out.format("|                                                        Tất cả nhân viên trong phòng ban                                                            |%n");
                     String leftAlignFormat = "| %-11d | %-22s | %-9d | %-28s | %-25d | %-21s | %-12d | %n";
                     System.out.format("+-------------+------------------------+-----------+------------------------------+---------------------------+-----------------------+--------------+%n");
                     System.out.format("|Mã nhân viên |     Tên nhân viên      | Giới tính |             Mail             |       Số điện thoại       |        Ngày vào       |    Lương     |%n");
@@ -74,7 +73,7 @@ public class MemberDept {
                     }
                     System.out.format("+-------------+------------------------+-----------+------------------------------+---------------------------+-----------------------+--------------+%n");
 
-                    System.out.printf("\tTổng có %d nhân viên phòng %s\n", staffList.stream().count(), staffList.get(0).getNameDept());
+                    System.out.printf("\tTổng có %d nhân viên phòng '%s'\n", staffList.stream().count(), staffList.get(0).getNameDept());
                     if (sLead == null) {
                         System.out.println("Phòng này chưa có trưởng phòng");
                         break;
@@ -82,7 +81,31 @@ public class MemberDept {
                     System.out.println("\tTrưởng phòng là: "+ sLead.getFullName());
                     break;
                 case 2:
+                    System.out.print("Nhập mã nhân viên của trưởng phòng mới: ");
+                    int idLeadNew;
 
+                    try {
+                        idLeadNew = Integer.parseInt(in.nextLine());
+
+                    } catch (Exception e) {
+                        System.out.println("Nhập sai định dạng");
+                        return;
+                    }
+                    Staff sChecklead = null;
+                    for (Staff s:staffList) {
+                        if(s.getStaffId() == idLeadNew){
+                            sChecklead = s;
+                        }
+                    }
+                    if(sChecklead==null){
+                        System.out.println("Nhân viên không có trong phòng ban này!!!");
+                        return;
+                    }
+                    Department deptChangeLead = new Department();
+                    deptChangeLead.setDeptHeadId(idLeadNew);
+
+                    deptDAO.updateIdLead(deptChangeLead, idDeptScanner);
+                    System.out.println("Đổi trưởng phòng thành công!!!");
                     break;
             }
         }
