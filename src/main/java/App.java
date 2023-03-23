@@ -79,6 +79,8 @@ public class App {
         ShowAllStaffAndDept opt1A2 = new ShowAllStaffAndDept();
         Option3 option3 = new Option3();
         MemberDept memberDept = new MemberDept();
+        StaffAndDept sAD = new StaffAndDept();
+
 
         if(loginSuccess){
             Scanner in = new Scanner(System.in);
@@ -107,9 +109,11 @@ public class App {
                     case 3:         //done
                         option3.menu(in);
                         break;
-                    case 4:
+                    case 4:         //done
+                        sAD.addDeleteStaffofDept(in);
                         break;
                     case 5:
+                        sAD.swapDept(in);
                         break;
                     case 6:         //done
                         taxOfStaff(in);

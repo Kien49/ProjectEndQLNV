@@ -95,7 +95,7 @@ public class DeptDAO {
         }
     }
 
-    /*public Department getById(int id) {
+    public Department getById(int id) {
         final String sql = "SELECT * FROM `department` WHERE  `department_id` = '" + id + "'";
         Department dept = null;
 
@@ -116,7 +116,7 @@ public class DeptDAO {
             e.printStackTrace();
         }
         return dept;
-    }*/
+    }
 
     public void updateIdLead(Department d, int id) {
         try {
@@ -125,6 +125,24 @@ public class DeptDAO {
                     d.getDeptHeadId(),id
             );
 
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Cập nhật thất bại");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void deleteLead(int id) {
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("UPDATE `department` SET  `department_head_id`= NULL   WHERE `department_id` = '%d'",
+                    id
+            );
+
+            //System.out.println(sql);
             Statement stmt = conn.createStatement();
             long rs = stmt.executeUpdate(sql);
 

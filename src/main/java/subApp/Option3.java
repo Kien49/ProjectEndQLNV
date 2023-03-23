@@ -91,13 +91,12 @@ public class Option3 {
             System.out.println("Lựa chọn không hợp lệ!!!");
             return;
         }
-        int idDept = deptList.get(numberDept-1).getDeptId();
         if(numberDept!=0){
+            int idDept = deptList.get(numberDept-1).getDeptId();
             s.setDepartmentId(idDept);
             staffDAO.insert(s);
         }
         else{
-            s.setDepartmentId(idDept);
             staffDAO.insertDeptIdNull(s);
         }
 
@@ -190,9 +189,41 @@ public class Option3 {
         if(sId == null){
             return;
         }
+        List<Staff> staffList = staffDAO.innerJoinMemberDept(sId.getDepartmentId());
+        Staff sLead = null;
 
-        staffDAO.delete(sId.getStaffId());
-        System.out.print("Xóa thành công!");
+        for (Staff s:staffList) {
+            if(s.getStaffId() == s.getLeadDept()){
+                sLead = s;
+            }
+        }
+        if(sLead.getStaffId() != sId.getStaffId()){
+            staffDAO.delete(sId.getStaffId());
+            System.out.print("Xóa thành công!");
+        }
+        else{
+            System.out.println("Người này là trưởng phòng bạn có muốn xóa không");
+            System.out.println("\t\t\t1: Có");
+            System.out.println("\t\t\t2: Không");
+            System.out.print("\t\t\tNhập lựa chọn: ");
+            int option;
+            try {
+                option = Integer.parseInt(in.nextLine());
+
+            } catch (Exception e) {
+                System.out.println("Nhập sai định dạng");
+                return;
+            }
+            if(option!=1){
+                return;
+            }
+            //System.out.println(sLead);
+            deptDAO.deleteLead(sLead.getDepartmentId());
+            staffDAO.delete(sId.getStaffId());
+            System.out.print("Xóa thành công!");
+        }
+
+
     }
 
     private void employee(Scanner in) {

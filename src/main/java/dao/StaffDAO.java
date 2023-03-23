@@ -144,6 +144,57 @@ public class StaffDAO {
             e.printStackTrace();
         }
     }
+    public void deleteDept(int id) {
+        Staff tmp = getById(id);
+        if (tmp == null) {
+            System.out.println("Cập nhật thất bại do không có id = " + id);
+            return;
+        }
+        try {
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("UPDATE `staff` SET `department_id` = NULL  WHERE `staff_id` = '%d'",
+                    id
+            );
+            System.out.println(sql);
+
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Cập nhật thất bại");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateIdDept(Staff s, int id) {
+
+        Staff tmp = getById(id);
+        if (tmp == null) {
+            System.out.println("Cập nhật thất bại do không có id = " + id);
+            return;
+        }
+        try {
+            DateFormat dateFormat = null;
+            dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            String tmpS = dateFormat.format(s.getHireDate());
+
+            Connection conn = MyConnection.getConnection();
+            String sql = String.format("UPDATE `staff` SET `department_id` = '%d'  WHERE `staff_id` = '%d'",
+                    s.getDepartmentId(),id
+            );
+
+            Statement stmt = conn.createStatement();
+            long rs = stmt.executeUpdate(sql);
+
+            if (rs == 0) {
+                System.out.println("Cập nhật thất bại");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void delete(int id) {
         Staff staff = getById(id);
@@ -171,7 +222,7 @@ public class StaffDAO {
         List<Staff> staffList = new ArrayList<>();
         try {
             Connection conn = MyConnection.getConnection();
-            String sql = "select s.staff_id, s.full_name, s.gender, s.mail, s.phone, s.hire_date, s.salary, d.department_name, d.department_head_id " +
+            String sql = "select s.staff_id, s.full_name, s.gender, s.mail, s.phone, s.hire_date, s.salary,s.department_id, d.department_name, d.department_head_id " +
                     " from staff s " +
                     " inner join department d " +
                     " on s.department_id= d.department_id " +
@@ -190,7 +241,7 @@ public class StaffDAO {
                 staff.setPhone(rs.getInt("s.phone"));
                 staff.setHireDate(rs.getDate("s.hire_date"));
                 staff.setSalary(rs.getInt("s.salary"));
-                //staff.setDepartmentId(rs.getInt("department_id"));
+                staff.setDepartmentId(rs.getInt("s.department_id"));
                 staff.setNameDept(rs.getString("d.department_name"));
                 staff.setLeadDept(rs.getInt("d.department_head_id"));
 
