@@ -19,9 +19,7 @@ public class StaffAndDept {
 
         System.out.print("\t\tNhập mã nhân viên: ");
         Staff sId = util.checkStaffId(in);
-        if(sId == null){
-            return;
-        }
+        if(sId == null) return;
         if(sId.getDepartmentId()==0){
             System.out.println("\t\tNhân viên này đang không thuộc phòng ban nào");
             System.out.println("\t\tChọn phòng ban để thêm nhân viên " +sId.getFullName() +" vào");
@@ -48,24 +46,18 @@ public class StaffAndDept {
         int option;
         try {
             option = Integer.parseInt(in.nextLine());
-
         } catch (Exception e) {
             System.out.println("Nhập sai định dạng");
             return;
         }
-        if(option!=1){
-            return;
-        }
-
+        if(option!=1) return;
         for (int i = 0; i < staffList.size(); i++) {
             if(sId.getStaffId() == staffList.get(i).getLeadDept()){
                 //Department dept = deptDAO.getById(sId.getDepartmentId());
                 deptDAO.deleteLead(sId.getDepartmentId());
             }
         }
-
         staffDAO.deleteDept(sId.getStaffId());
-
         System.out.println("Xóa phòng ban thành công");
     }
 
@@ -74,9 +66,7 @@ public class StaffAndDept {
 
         System.out.print("\t\tNhập mã nhân viên: ");
         Staff sId = util.checkStaffId(in);
-        if(sId == null){
-            return;
-        }
+        if(sId == null) return;
         if(sId.getDepartmentId()==0){
             System.out.println("\t\tNhân viên này đang không thuộc phòng ban nào");
             return;
@@ -92,9 +82,7 @@ public class StaffAndDept {
             System.out.println("Lựa chọn không hợp lệ!!!");
             return;
         }
-        if(numberDept ==0 ){
-            return;
-        }
+        if(numberDept ==0 ) return;
         int idDept = deptList.get(numberDept-1).getDeptId();
         for (int i = 0; i < staffList.size(); i++) {
             if(sId.getStaffId() == staffList.get(i).getLeadDept()){
@@ -104,7 +92,6 @@ public class StaffAndDept {
         }
         sId.setDepartmentId(idDept);
         staffDAO.updateIdDept(sId, sId.getStaffId());
-
         System.out.println("Nhân viên "+sId.getFullName() +" đã thêm vào phòng ban mới ");
     }
 }

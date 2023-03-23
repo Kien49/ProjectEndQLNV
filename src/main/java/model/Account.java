@@ -8,12 +8,6 @@ public class Account {
     public Account(){
 
     }
-    public Account(String userName, String passWord, String status) {
-        this.userName = userName;
-        this.passWord = passWord;
-        this.status = status;
-    }
-
     public String getUserName() {
         return userName;
     }
@@ -37,7 +31,6 @@ public class Account {
     public void setStatus(String status) {
         this.status = status;
     }
-
     @Override
     public String toString() {
         return "Account{" +

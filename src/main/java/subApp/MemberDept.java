@@ -5,7 +5,6 @@ import dao.StaffDAO;
 import model.Department;
 import model.Staff;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,9 +24,7 @@ public class MemberDept {
         }
         int idDept = listDept.get(numberDept-1).getDeptId();
 
-
         int option = -1;
-
         do {
             System.out.println("\t\t\t1. Xem tất cả thành viên trong phòng ban");
             System.out.println("\t\t\t2. Đổi trưởng phòng");

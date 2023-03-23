@@ -8,12 +8,6 @@ public class CodeRegister {
 
     }
 
-    public CodeRegister(String userName, String passWord, int code) {
-        this.userName = userName;
-        this.passWord = passWord;
-        this.code = code;
-    }
-
     public String getUserName() {
         return userName;
     }

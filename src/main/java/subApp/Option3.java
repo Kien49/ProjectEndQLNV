@@ -14,8 +14,6 @@ import java.util.Scanner;
 public class Option3 {
     private StaffDAO staffDAO = new StaffDAO();
     private DeptDAO deptDAO = new DeptDAO();
-
-
     private Util util = new Util();
 
 
@@ -24,64 +22,33 @@ public class Option3 {
         Staff s = new Staff();
         List<Staff> staffList = staffDAO.getAll();
         List<Department> deptList = deptDAO.getAll();
-        System.out.print("\t\t\tNhập email muốn thêm : ");
-        String mail = in.nextLine();
 
-        if(!util.checkMail(mail, staffList)){
-            return;
-        }
-        else{
-            s.setMail(mail);
-        }
+        System.out.print("\t\t\tNhập email muốn thêm : ");
+        String mail = util.checkMail(in, staffList);
+        if(mail == null) return;
+        s.setMail(mail);
 
         System.out.print("\t\t\tNhập tên sinh viên: ");
-        String name = in.nextLine();
-        if(!util.checkNameScanner(name)){
-            return;
-        }
-        else{
-            s.setFullName(name);
-        }
+        String name = util.checkNameScanner(in);
+        if(name == null) return;
+        s.setFullName(name);
 
         System.out.print("\t\t\tNhập giới tính: ");
         String gender = in.nextLine();
         int numberGender = util.checkGenderScanner(gender);
-        if(numberGender == -1){
-            return;
-        }
+        if(numberGender == -1) return;
         s.setGender(numberGender);
 
-        System.out.print("\t\t\tNhập số điện thoại: ");
-        int sdt = 0;
-        try {
-            sdt = Integer.parseInt(in.nextLine());
-
-        } catch (Exception e) {
-            System.out.println("Nhập sai định dạng");
-            return;
-        }
-        s.setPhone(sdt);
+        String sdtS = util.checkSdtScanner(in);
+        if(sdtS == null) return;
+        s.setPhone(sdtS);
 
         Date date = util.checkDateScanner(in);
-        if(date == null){
-            return;
-        }
+        if(date == null) return;
         s.setHireDate(date);
 
-
-        System.out.print("\t\t\tNhập lương nhân viên: ");
-        int salary;
-        try {
-            salary = Integer.parseInt(in.nextLine());
-
-        } catch (Exception e) {
-            System.out.println("Nhập sai định dạng");
-            return;
-        }
-        if(salary<=0){
-            System.out.println("Lương không là số âm");
-            return;
-        }
+        int salary = util.checkSalaryScanner(in);
+        if(salary==0) return;
         s.setSalary(salary);
 
         System.out.println("\t\tDanh phòng ban của công ty");
@@ -95,10 +62,9 @@ public class Option3 {
             int idDept = deptList.get(numberDept-1).getDeptId();
             s.setDepartmentId(idDept);
             staffDAO.insert(s);
+            return;
         }
-        else{
-            staffDAO.insertDeptIdNull(s);
-        }
+        staffDAO.insertDeptIdNull(s);
 
         System.out.println("Thêm nhân viên thành công");
     }
@@ -108,9 +74,7 @@ public class Option3 {
         System.out.print("\t\t\tNhập mã nhân viên người bạn cần sửa: ");
 
         Staff sId = util.checkStaffId(in);
-        if(sId == null){
-            return;
-        }
+        if(sId == null) return;
         System.out.println("\t\t\tThông tin của nhân viên này: ");
         System.out.println(sId);
         System.out.println("\tNhập thông tin mới cho nhân viên!");
@@ -118,65 +82,32 @@ public class Option3 {
         Staff s = new Staff();
 
         System.out.print("\t\tNhập email muốn sửa : ");
-        String mail = in.nextLine();
-
-        if(!util.checkMailHaveID(mail, sId, staffList)){
-            return;
-        }
-        else{
-            s.setMail(mail);
-        }
+        String mail = util.checkMailHaveID(in, sId, staffList);
+        if(mail == null) return;
+        s.setMail(mail);
 
         System.out.print("\t\tNhập tên sinh viên: ");
-        String name = in.nextLine();
-        if(!util.checkNameScanner(name)){
-            return;
-        }
-        else{
-            s.setFullName(name);
-        }
+        String name = util.checkNameScanner(in);
+        if(name == null) return;
+        s.setFullName(name);
 
         System.out.print("\t\tNhập giới tính: ");
         String gender = in.nextLine();
         int numberGender = util.checkGenderScanner(gender);
-        if(numberGender == -1){
-            return;
-        }
+        if(numberGender == -1) return;
         s.setGender(numberGender);
 
-        System.out.print("\t\tNhập số điện thoại: ");
-        int sdt;
-        try {
-            sdt = Integer.parseInt(in.nextLine());
-
-        } catch (Exception e) {
-            System.out.println("Nhập sai định dạng");
-            return;
-        }
-        s.setPhone(sdt);
+        String sdtS = util.checkSdtScanner(in);
+        if(sdtS == null) return;
+        s.setPhone(sdtS);
 
         Date date = util.checkDateScanner(in);
-        if(date == null){
-            return;
-        }
+        if(date == null) return;
         s.setHireDate(date);
 
-
-        System.out.print("\t\tNhập lương nhân viên: ");
-        int salary;
-        try {
-            salary = Integer.parseInt(in.nextLine());
-
-        } catch (Exception e) {
-            System.out.println("Nhập sai định dạng");
-            return;
-        }
-        if(salary <=0 ){
-            System.out.println("Lương không là số âm");
-            return;
-        }
+        int salary = util.checkSalaryScanner(in);
+        if(salary==0) return;
         s.setSalary(salary);
-
 
         staffDAO.updateIdDeptNull(s, sId.getStaffId());
         System.out.println("Cập nhật thông tin nhân viên thành công");
@@ -186,9 +117,7 @@ public class Option3 {
         System.out.print("\t\t\tNhập mã nhân viên muốn xóa khỏi công ty: ");
 
         Staff sId = util.checkStaffId(in);
-        if(sId == null){
-            return;
-        }
+        if(sId == null) return;
         List<Staff> staffList = staffDAO.innerJoinMemberDept(sId.getDepartmentId());
         Staff sLead = null;
 
@@ -214,9 +143,11 @@ public class Option3 {
                 System.out.println("Nhập sai định dạng");
                 return;
             }
-            if(option!=1){
-                return;
-            }
+            if(option ==2) return;
+
+            if(option!=1 && option!=2 ) {
+                System.out.println("Không có lựa chọn này!!!");
+                return;}
             //System.out.println(sLead);
             deptDAO.deleteLead(sLead.getDepartmentId());
             staffDAO.delete(sId.getStaffId());
@@ -265,7 +196,6 @@ public class Option3 {
     }
 
 //Department
-
     private void addDepartment(Scanner in) {
         List<Department> deptList = deptDAO.getAll();
         Department d = new Department();
@@ -273,14 +203,9 @@ public class Option3 {
         System.out.print("\t\t\tNhập tên phòng ban mới : ");
         String name = in.nextLine();
 
-        if(!util.checkNameDept(name, deptList)){
-            return;
-        }
-        else{
-            d.setDeptName(name);
-        }
+        if(!util.checkNameDept(name, deptList)) return;
+        d.setDeptName(name);
         deptDAO.insert(d);
-
         System.out.println("Thêm phòng ban thành công");
     }
     private void fixDepartment(Scanner in){
@@ -293,20 +218,14 @@ public class Option3 {
             System.out.println("Lựa chọn không hợp lệ!!!");
             return;
         }
-        if(numberDept == 0){
-            return;
-        }
+        if(numberDept == 0) return;
         int idDept = deptList.get(numberDept-1).getDeptId();
 
         Department d = new Department();
         System.out.print("\t\t\tNhập tên phòng ban: ");
         String name = in.nextLine();
-        if(!util.checkNameDept(name, deptList)){
-            return;
-        }
-        else{
-            d.setDeptName(name);
-        }
+        if(!util.checkNameDept(name, deptList)) return;
+        d.setDeptName(name);
         deptDAO.updateIdName(d, idDept);
 
         System.out.println("Cập nhật thông tin phòng ban thành công");
@@ -320,13 +239,23 @@ public class Option3 {
             System.out.println("Lựa chọn không hợp lệ!!!");
             return;
         }
-        if(numberDept == 0){
-            return;
-        }
+        if(numberDept == 0) return;
         int idDept = deptList.get(numberDept-1).getDeptId();
 
+        List<Staff> staffList = staffDAO.innerJoinMemberDept(idDept);
+        if(staffList.size() == 0){
+            deptDAO.delete(idDept);
+            System.out.print("Xóa phòng ban thành công!");
+            return;
+        }
+        if(staffList.get(0).getLeadDept() != 0){
+            deptDAO.deleteLead(idDept);
+        }
+        for (int i = 0; i < staffList.size(); i++) {
+            staffDAO.deleteDept(staffList.get(i).getStaffId());
+        }
         deptDAO.delete(idDept);
-        System.out.print("Xóa thành công!");
+        System.out.println("Xóa phòng ban thành công");
     }
     private void department(Scanner in) {
         int option = -1;
@@ -393,7 +322,6 @@ public class Option3 {
                 case 2:
                     department(in);
                     break;
-
             }
         }
         while (option != 0 );

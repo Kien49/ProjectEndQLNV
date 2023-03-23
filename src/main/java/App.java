@@ -22,9 +22,7 @@ public class App {
     private static void taxOfStaff(Scanner in){
         System.out.print("\t\tNhập mã nhân viên người bạn cần xem thuế: ");
         Staff sId = util.checkStaffId(in);
-        if(sId == null){
-            return;
-        }
+        if(sId == null) return;
         double tax = 0.2 * (sId.getSalary() - sId.getSalary() * 0.93);
         System.out.format("+-------------------------------------------------------------+%n");
         System.out.format("|                      Thuế của nhân viên                     |%n");

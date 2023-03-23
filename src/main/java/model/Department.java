@@ -12,12 +12,6 @@ public class Department {
     public Department(){
 
     }
-    public Department(int deptId, String deptName, int deptHeadId) {
-        this.deptId = deptId;
-        this.deptName = deptName;
-        this.deptHeadId = deptHeadId;
-    }
-
     public int getDeptId() {
         return deptId;
     }

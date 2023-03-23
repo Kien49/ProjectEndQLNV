@@ -7,7 +7,7 @@ public class Staff implements Comparable<Staff>{
     private String fullName;
     private int gender;
     private String mail;
-    private int phone;
+    private String phone;
     private Date hireDate;
     private int salary;
     private int departmentId;
@@ -35,18 +35,6 @@ public class Staff implements Comparable<Staff>{
     public Staff(){
 
     }
-
-    public Staff(int staffId, String fullName, int gender, String mail, int phone, Date hireDate, int salary, int departmentId) {
-        this.staffId = staffId;
-        this.fullName = fullName;
-        this.gender = gender;
-        this.mail = mail;
-        this.phone = phone;
-        this.hireDate = hireDate;
-        this.salary = salary;
-        this.departmentId = departmentId;
-    }
-
     public int getStaffId() {
         return staffId;
     }
@@ -79,11 +67,11 @@ public class Staff implements Comparable<Staff>{
         this.mail = mail;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

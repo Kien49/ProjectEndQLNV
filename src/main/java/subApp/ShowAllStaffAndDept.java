@@ -28,7 +28,6 @@ public class ShowAllStaffAndDept {
 
             try {
                 option = Integer.parseInt(in.nextLine());
-
             } catch (Exception e) {
                 System.out.println("Nhập sai định dạng");
                 continue;
@@ -61,18 +60,12 @@ public class ShowAllStaffAndDept {
                 case 4:
                     System.out.print("\tNhập mã nhân viên người bạn cần tìm: ");
                     Staff sId = util.checkStaffId(in);
-                    if(sId == null){
-                        return;
-                    }
-                    else{
-                        System.out.println(sId);
-                    }
-
+                    if(sId == null) return;
+                    System.out.println(sId);
                     break;
             }
         }
         while (option != 0 );
-
     }
 
     public void option2() {
@@ -88,6 +81,5 @@ public class ShowAllStaffAndDept {
             System.out.format(leftAlignFormat, deptList.get(i).getDeptId(), deptList.get(i).getDeptName(), deptList.get(i).getDeptHeadId());
         }
         System.out.format("+-------------+------------------------+-----------------+%n");
-
     }
 }

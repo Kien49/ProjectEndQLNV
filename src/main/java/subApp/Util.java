@@ -40,40 +40,89 @@ public class Util{
         return sId;
     }
 
-    public boolean checkMailHaveID(String mail, Staff sId, List<Staff> staffList){
+    public String checkMailHaveID(Scanner in, Staff sId, List<Staff> staffList){
+        String mail = in.nextLine();
         if(!sId.getMail().equalsIgnoreCase(mail)){
             for (Staff st: staffList) {
                 if(st.getMail().equalsIgnoreCase(mail)){
                     System.out.println("Đã có mail này");
-                    return false;
+                    return null;
                 }
             }
         }
         if(isEmpty(mail)){
             System.out.println("Email không được để trống");
-            return false;
+            return null;
         }
-        return true;
+        if(mail.contains(".")){
+            return mail;
+        }
+        return mail+"@gmail.com";
+
     }
-    public boolean checkMail(String mail, List<Staff> staffList){
+    public String checkMail(Scanner in, List<Staff> staffList){
+        String mail = in.nextLine();
         for (Staff st: staffList) {
             if(st.getMail().equalsIgnoreCase(mail)){
                 System.out.println("Đã có mail này");
-                return false;
+                return null;
             }
         }
         if(isEmpty(mail)){
             System.out.println("Email không được để trống");
-            return false;
+            return null;
         }
-        return true;
+        if(mail.contains(".")){
+            return mail;
+        }
+        return mail+"@gmail.com";
     }
-    public boolean checkNameScanner(String name){
+    public String checkNameScanner(Scanner in){
+        String name = in.nextLine();
         if(isEmpty(name)){
             System.out.println("Tên không được để trống");
-            return false;
+            return null;
         }
-        return true;
+        return name;
+    }
+
+    public String checkSdtScanner(Scanner in){
+        System.out.print("\t\tNhập số điện thoại: ");
+        String sdtS = in.nextLine();
+        int sdtN;
+        try {
+            sdtN = Integer.parseInt(sdtS);
+
+        } catch (Exception e) {
+            System.out.println("Nhập sai định dạng");
+            return null;
+        }
+        if(sdtN <=0 ){
+            System.out.println("Nhập sai định dạng");
+            return null;
+        }
+        if(sdtS.length() != 10){
+            System.out.println("Chưa đủ số điện thoại");
+            return null;
+        }
+        return sdtS;
+    }
+
+    public int checkSalaryScanner(Scanner in){
+        System.out.print("\t\t\tNhập lương nhân viên: ");
+        int salary;
+        try {
+            salary = Integer.parseInt(in.nextLine());
+
+        } catch (Exception e) {
+            System.out.println("Nhập sai định dạng");
+            return 0;
+        }
+        if(salary<=0){
+            System.out.println("Lương không là số âm");
+            return 0;
+        }
+        return salary;
     }
     public int checkGenderScanner(String gender){
         if(gender.equalsIgnoreCase("nam")){

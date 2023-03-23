@@ -13,9 +13,7 @@ import java.util.List;
 public class DeptDAO {
     public List<Department> getAll() {
         final String sql = "SELECT * FROM `department`";
-
         List<Department> deptList = new ArrayList<>();
-
         try {
             Connection conn = MyConnection.getConnection();
             Statement stmt = conn.createStatement();
@@ -28,7 +26,6 @@ public class DeptDAO {
                 dept.setDeptName(rs.getString("department_name"));
                 dept.setDeptHeadId(rs.getInt("department_head_id"));
 
-
                 deptList.add(dept);
             }
             rs.close();
@@ -38,7 +35,6 @@ public class DeptDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return deptList;
     }
 
@@ -50,7 +46,6 @@ public class DeptDAO {
                     " from staff s " +
                     " inner join department d " +
                     " on s.staff_id = d.department_head_id; ";
-
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
@@ -79,7 +74,6 @@ public class DeptDAO {
 
     public void insert(Department d) {
         try {
-
             Connection conn = MyConnection.getConnection();
             String sql = String.format("insert into `department` (`department_id`,`department_name`) VALUES ('%d','%s') ",
                     d.getDeptId(), d.getDeptName()
@@ -95,7 +89,7 @@ public class DeptDAO {
         }
     }
 
-    public Department getById(int id) {
+    /*public Department getById(int id) {
         final String sql = "SELECT * FROM `department` WHERE  `department_id` = '" + id + "'";
         Department dept = null;
 
@@ -116,8 +110,7 @@ public class DeptDAO {
             e.printStackTrace();
         }
         return dept;
-    }
-
+    }*/
     public void updateIdLead(Department d, int id) {
         try {
             Connection conn = MyConnection.getConnection();

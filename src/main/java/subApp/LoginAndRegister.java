@@ -60,7 +60,6 @@ public class LoginAndRegister {
                 if(checkOutWhile && checkLoginFalse){
                     System.out.printf("Bạn nhập sai tài khoản mật khẩu. Bạn còn %d lần nhập\n", count);
                 }
-
             } else {
                 System.out.print("Bạn đã nhập quá số lần quy định! Mời bạn thoát app và đợi 5 phút.");
                 break;
@@ -71,7 +70,6 @@ public class LoginAndRegister {
     private void register(Scanner in) {
         String userName = "";
         String passWord = "";
-
 
         List<Account> accountList = accountDAO.getAll();
 
@@ -87,9 +85,7 @@ public class LoginAndRegister {
                     break;
                 }
             }
-            if(!checkUserName){
-                break;
-            }
+            if(!checkUserName)break;
         }
         if(!checkUserName ){
             Account a = new Account();
@@ -107,14 +103,11 @@ public class LoginAndRegister {
 
             System.out.print("Mã kích hoạt đã gửi về số điện thoại của hr. Vui lòng nhập mã: ");
             int code = 0;
-
             try {
                 code = Integer.parseInt(in.nextLine());
-
             } catch (Exception e) {
                 System.out.println("Nhập sai định dạng");
             }
-
 
             if (userName.equalsIgnoreCase(codeRes.getUserName())
                     && passWord.equalsIgnoreCase(codeRes.getPassWord())
@@ -132,10 +125,7 @@ public class LoginAndRegister {
             }else{
                 System.out.print("\tNhập mã sai. Đăng ký thất bại!!! ");
                 codeResDAO.delete(userName);
-
             }
-
-
         }
     }
 
@@ -164,7 +154,6 @@ public class LoginAndRegister {
             switch (option) {
                 case 1:
                     System.out.println("\t\t\tĐăng nhập");
-
                     stopLogin = true;
                     login(in);
                     break;
@@ -177,6 +166,5 @@ public class LoginAndRegister {
         }
         while (option != 0 && !stopLogin);
     }
-
 
 }

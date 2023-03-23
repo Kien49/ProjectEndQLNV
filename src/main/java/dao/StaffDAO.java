@@ -15,9 +15,7 @@ import java.util.List;
 public class StaffDAO {
     public List<Staff> getAll() {
         final String sql = "SELECT * FROM `staff`";
-
         List<Staff> staffList = new ArrayList<>();
-
         try {
             Connection conn = MyConnection.getConnection();
             Statement stmt = conn.createStatement();
@@ -30,7 +28,7 @@ public class StaffDAO {
                 staff.setFullName(rs.getString("full_name"));
                 staff.setGender(rs.getInt("gender"));
                 staff.setMail(rs.getString("mail"));
-                staff.setPhone(rs.getInt("phone"));
+                staff.setPhone(rs.getString("phone"));
                 staff.setHireDate(rs.getDate("hire_date"));
                 staff.setSalary(rs.getInt("salary"));
                 staff.setDepartmentId(rs.getInt("department_id"));
@@ -62,7 +60,7 @@ public class StaffDAO {
                 staff.setFullName(rs.getString("full_name"));
                 staff.setGender(rs.getInt("gender"));
                 staff.setMail(rs.getString("mail"));
-                staff.setPhone(rs.getInt("phone"));
+                staff.setPhone(rs.getString("phone"));
                 staff.setHireDate(rs.getDate("hire_date"));
                 staff.setSalary(rs.getInt("salary"));
                 staff.setDepartmentId(rs.getInt("department_id"));
@@ -118,7 +116,6 @@ public class StaffDAO {
     }
 
     public void updateIdDeptNull(Staff s, int id) {
-
         Staff tmp = getById(id);
         if (tmp == null) {
             System.out.println("Cập nhật thất bại do không có id = " + id);
@@ -169,7 +166,6 @@ public class StaffDAO {
     }
 
     public void updateIdDept(Staff s, int id) {
-
         Staff tmp = getById(id);
         if (tmp == null) {
             System.out.println("Cập nhật thất bại do không có id = " + id);
@@ -228,7 +224,6 @@ public class StaffDAO {
                     " on s.department_id= d.department_id " +
                     " where s.department_id = '" + id + "'";
 
-
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -238,7 +233,7 @@ public class StaffDAO {
                 staff.setFullName(rs.getString("s.full_name"));
                 staff.setGender(rs.getInt("s.gender"));
                 staff.setMail(rs.getString("s.mail"));
-                staff.setPhone(rs.getInt("s.phone"));
+                staff.setPhone(rs.getString("s.phone"));
                 staff.setHireDate(rs.getDate("s.hire_date"));
                 staff.setSalary(rs.getInt("s.salary"));
                 staff.setDepartmentId(rs.getInt("s.department_id"));
@@ -254,7 +249,6 @@ public class StaffDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return staffList;
     }
 
@@ -275,7 +269,7 @@ public class StaffDAO {
                 staff.setFullName(rs.getString("full_name"));
                 staff.setGender(rs.getInt("gender"));
                 staff.setMail(rs.getString("mail"));
-                staff.setPhone(rs.getInt("phone"));
+                staff.setPhone(rs.getString("phone"));
                 staff.setHireDate(rs.getDate("hire_date"));
                 staff.setSalary(rs.getInt("salary"));
                 staff.setDepartmentId(rs.getInt("department_id"));
@@ -290,7 +284,6 @@ public class StaffDAO {
             e.printStackTrace();
         }
         return staffList;
-
     }
 
 }
