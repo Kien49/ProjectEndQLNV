@@ -23,7 +23,20 @@ public class App {
         System.out.print("\t\tNhập mã nhân viên người bạn cần xem thuế: ");
         Staff sId = util.checkStaffId(in);
         if(sId == null) return;
-        double tax = 0.2 * (sId.getSalary() - sId.getSalary() * 0.93);
+        System.out.print("\t\tNhập thu nhập ngoài của người này: ");
+        double thuNhapNgoai = 0;
+        try {
+            thuNhapNgoai = Integer.parseInt(in.nextLine());
+
+        } catch (Exception e) {
+            System.out.println("Nhập sai định dạng");
+        }
+        if(thuNhapNgoai < 0){
+            System.out.println("Thu nhập ngoài không âm!!!");
+            thuNhapNgoai =0;
+        }
+
+        double tax = 0.2 * (sId.getSalary() + thuNhapNgoai);
         System.out.format("+-------------------------------------------------------------+%n");
         System.out.format("|                      Thuế của nhân viên                     |%n");
         String leftAlignFormat = "| %-16s | %-12d | %-12d | %-10.1f |%n";
@@ -98,25 +111,25 @@ public class App {
                     continue;
                 }
                 switch (option) {
-                    case 1:         //done
+                    case 1:
                         opt1A2.option1(in);
                         break;
-                    case 2:         //done
+                    case 2:
                         opt1A2.option2();
                         break;
-                    case 3:         //done
+                    case 3:
                         option3.menu(in);
                         break;
-                    case 4:         //done
+                    case 4:
                         sAD.addDeleteStaffofDept(in);
                         break;
                     case 5:
                         sAD.swapDept(in);
                         break;
-                    case 6:         //done
+                    case 6:
                         taxOfStaff(in);
                         break;
-                    case 7:         //done
+                    case 7:
                         List<Staff> lastListHireDate =  staffDAO.lastHireDate();
                         for (Staff s: lastListHireDate) {
                             System.out.println(s);

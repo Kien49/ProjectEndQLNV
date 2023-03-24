@@ -14,7 +14,7 @@ import java.util.List;
 
 public class StaffDAO {
     public List<Staff> getAll() {
-        final String sql = "SELECT * FROM `staff`";
+        final String sql = "SELECT * FROM `staff` where status = 1";
         List<Staff> staffList = new ArrayList<>();
         try {
             Connection conn = MyConnection.getConnection();
@@ -47,7 +47,7 @@ public class StaffDAO {
     }
 
     public Staff getById(int id) {
-        final String sql = "SELECT * FROM `staff` WHERE  `staff_id` = '" + id + "'";
+        final String sql = "SELECT * FROM `staff` WHERE  `status` = 1 and `staff_id` = '" + id + "'";
         Staff staff = null;
 
         try {
@@ -81,8 +81,8 @@ public class StaffDAO {
             String tmp = dateFormat.format(s.getHireDate());
 
             Connection conn = MyConnection.getConnection();
-            String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`, `department_id`) VALUES ('%d','%s','%d','%s', '%s','%s','%d','%d') ",
-                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), tmp, s.getSalary(), s.getDepartmentId()
+            String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`, `department_id`, status) VALUES ('%d','%s','%d','%s', '%s','%s','%d','%d', '%d') ",
+                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), tmp, s.getSalary(), s.getDepartmentId(), 1
             );
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
@@ -101,8 +101,8 @@ public class StaffDAO {
             String tmp = dateFormat.format(s.getHireDate());
 
             Connection conn = MyConnection.getConnection();
-            String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`) VALUES ('%d','%s','%d','%s', '%s','%s','%d') ",
-                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), tmp, s.getSalary()
+            String sql = String.format("insert into `staff` (`staff_id`,`full_name`,`gender`,`mail`,`phone`, `hire_date`, `salary`, status) VALUES ('%d','%s','%d','%s', '%s','%s','%d', '%d') ",
+                    s.getStaffId(), s.getFullName(), s.getGender(), s.getMail(), s.getPhone(), tmp, s.getSalary(), 1
             );
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
@@ -198,7 +198,7 @@ public class StaffDAO {
             throw new RuntimeException("Nhân viên không tồn tại!");
         }
 
-        final String sql = "DELETE FROM `staff` WHERE  `staff_id` = '" + id + "'";
+        final String sql = "update `staff` set `status` = 0 WHERE  `staff_id` = '" + id + "'";
         try {
             Connection conn = MyConnection.getConnection();
             Statement stmt = conn.createStatement();
@@ -222,7 +222,7 @@ public class StaffDAO {
                     " from staff s " +
                     " inner join department d " +
                     " on s.department_id= d.department_id " +
-                    " where s.department_id = '" + id + "'";
+                    " where s.status =1 and s.department_id = '" + id + "'";
 
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);

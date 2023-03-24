@@ -4,7 +4,15 @@ public class Department {
     private int deptId;
     private String deptName;
     private int deptHeadId;
+    private int status;
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
     //innerjoin
     private  String nameLead;
     private int salaryLead;

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DeptDAO {
     public List<Department> getAll() {
-        final String sql = "SELECT * FROM `department`";
+        final String sql = "SELECT * FROM `department` where status = 1";
         List<Department> deptList = new ArrayList<>();
         try {
             Connection conn = MyConnection.getConnection();
@@ -75,8 +75,8 @@ public class DeptDAO {
     public void insert(Department d) {
         try {
             Connection conn = MyConnection.getConnection();
-            String sql = String.format("insert into `department` (`department_id`,`department_name`) VALUES ('%d','%s') ",
-                    d.getDeptId(), d.getDeptName()
+            String sql = String.format("insert into `department` (`department_id`,`department_name`, status) VALUES ('%d','%s', '%d') ",
+                    d.getDeptId(), d.getDeptName(),1
             );
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sql);
@@ -165,7 +165,7 @@ public class DeptDAO {
     }
 
     public void delete(int id) {
-        final String sql = "DELETE FROM `department` WHERE  `department_id` = '" + id + "'";
+        final String sql = "UPDATE `department` set status = 0 WHERE  `department_id` = '" + id + "'";
         try {
             Connection conn = MyConnection.getConnection();
             Statement stmt = conn.createStatement();

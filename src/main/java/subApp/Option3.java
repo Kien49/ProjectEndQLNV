@@ -118,6 +118,11 @@ public class Option3 {
 
         Staff sId = util.checkStaffId(in);
         if(sId == null) return;
+        if(sId.getDepartmentId() == 0){
+            staffDAO.delete(sId.getStaffId());
+            System.out.print("Xóa thành công!");
+            return;
+        }
         List<Staff> staffList = staffDAO.innerJoinMemberDept(sId.getDepartmentId());
         Staff sLead = null;
 
