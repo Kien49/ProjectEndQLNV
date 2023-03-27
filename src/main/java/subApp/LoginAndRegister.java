@@ -17,6 +17,8 @@ public class LoginAndRegister {
     public String userNameNow ="";
     public String passWordNow ="";
 
+    private boolean statusOff = false;
+
     private void login(Scanner in) {
         List<Account> accountList = accountDAO.getAll();
 
@@ -25,9 +27,8 @@ public class LoginAndRegister {
         String status = "off";
 
         int count = 3;
-        boolean checkOutWhile = true;
-        boolean checkLoginFalse = true;
-        while (checkOutWhile) {
+
+        while (true) {
             if (count > 0) {
                 System.out.print("\tNhập Username: ");
                 userName = in.nextLine();
@@ -35,29 +36,16 @@ public class LoginAndRegister {
                 passWord = in.nextLine();
                 count--;
 
-                checkLoginFalse = true;
-                for (Account a : accountList) {
-                    if (userName.equalsIgnoreCase(a.getUserName())
-                            && passWord.equalsIgnoreCase(a.getPassWord())
-                            && status.equalsIgnoreCase(a.getStatus())) {
-                        System.out.print("Chào mừng bạn đến với hệ thống nhân viên của công ty");
-                        a.setUserName(a.getUserName());
-                        a.setPassWord(a.getPassWord());
-                        a.setStatus("onl");
-                        accountDAO.update(a,a.getUserName());
-                        checkOutWhile = false;
-                        loginSuccess = true;
-                        userNameNow = userName;
-                        passWordNow = passWord;
-                        break;
-                    }else if (userName.equalsIgnoreCase(a.getUserName())
-                            && passWord.equalsIgnoreCase(a.getPassWord()) && !status.equalsIgnoreCase(a.getStatus()) && checkLoginFalse) {
-                        checkLoginFalse = false;
-                        System.out.printf("Tài khoản đang được sử dụng. Bạn còn %d lần nhập\n", count);
-                        break;
-                    }
+                if (checkLogin(userName, passWord, status)) {
+                    loginSuccess = true;
+                    userNameNow = userName;
+                    passWordNow = passWord;
+                    break;
                 }
-                if(checkOutWhile && checkLoginFalse){
+                if(statusOff){
+                    System.out.printf("Tài khoản đang được sử dụng. Bạn còn %d lần nhập\n", count);
+                    statusOff = false;
+                }else{
                     System.out.printf("Bạn nhập sai tài khoản mật khẩu. Bạn còn %d lần nhập\n", count);
                 }
             } else {
@@ -65,6 +53,28 @@ public class LoginAndRegister {
                 break;
             }
         }
+    }
+
+    public boolean checkLogin(String userName, String passWord, String status){
+        List<Account> accountList = accountDAO.getAll();
+        for (Account a : accountList) {
+            if (userName.equalsIgnoreCase(a.getUserName())
+                    && passWord.equalsIgnoreCase(a.getPassWord())
+                    && status.equalsIgnoreCase(a.getStatus())) {
+                System.out.print("Chào mừng bạn đến với hệ thống nhân viên của công ty");
+                a.setUserName(a.getUserName());
+                a.setPassWord(a.getPassWord());
+                a.setStatus("onl");
+                accountDAO.update(a,a.getUserName());
+                return true;
+            }else if (userName.equalsIgnoreCase(a.getUserName())
+                    && passWord.equalsIgnoreCase(a.getPassWord())
+                    && !status.equalsIgnoreCase(a.getStatus())){
+                statusOff = true;
+                return false;
+            }
+        }
+        return false;
     }
 
     private void register(Scanner in) {
@@ -88,46 +98,59 @@ public class LoginAndRegister {
             if(!checkUserName)break;
         }
         if(!checkUserName ){
-            Account a = new Account();
             System.out.print("\tNhập PassWord: ");
             passWord = in.nextLine();
 
-            Random rd = new Random();
-            int numberCode = rd.nextInt(2000)+1000;
+            if(checkRegister(userName, passWord, in))   loginSuccess = true;
 
-            CodeRegister codeRes = new CodeRegister();
-            codeRes.setUserName(userName);
-            codeRes.setPassWord(passWord);
-            codeRes.setCode(numberCode);
-            codeResDAO.insert(codeRes);
-
-            System.out.print("Mã kích hoạt đã gửi về số điện thoại của hr. Vui lòng nhập mã: ");
-            int code = 0;
-            try {
-                code = Integer.parseInt(in.nextLine());
-            } catch (Exception e) {
-                System.out.println("Nhập sai định dạng");
-            }
-
-            if (userName.equalsIgnoreCase(codeRes.getUserName())
-                    && passWord.equalsIgnoreCase(codeRes.getPassWord())
-                    && code == codeRes.getCode()) {
-
-                codeResDAO.delete(userName);
-
-                a.setUserName(userName);
-                a.setPassWord(passWord);
-                a.setStatus("onl");
-
-                System.out.print("\tĐăng ký thành công!!! ");
-                accountDAO.insert(a);
-                loginSuccess = true;
-            }else{
-                System.out.print("\tNhập mã sai. Đăng ký thất bại!!! ");
-                codeResDAO.delete(userName);
-            }
         }
     }
+    public int randomNumberCode(){
+        Random rd = new Random();
+        //int codeResgister = rd.nextInt(2000)+1000;
+        int codeResgister = 1234;
+        return codeResgister;
+    }
+
+    public boolean checkRegister(String userName, String passWord, Scanner in){
+        int codeResgister = randomNumberCode();
+        Account a = new Account();
+        CodeRegister codeRes = new CodeRegister();
+        codeRes.setUserName(userName);
+        codeRes.setPassWord(passWord);
+        codeRes.setCode(codeResgister);
+        codeResDAO.insert(codeRes);
+
+        System.out.print("Mã kích hoạt đã gửi về số điện thoại của hr. Vui lòng nhập mã: ");
+        int code = 0;
+        try {
+            code = Integer.parseInt(in.nextLine());
+        } catch (Exception e) {
+            System.out.println("Nhập sai định dạng");
+            return false;
+        }
+
+        if (userName.equalsIgnoreCase(codeRes.getUserName())
+                && passWord.equalsIgnoreCase(codeRes.getPassWord())
+                && code == codeRes.getCode()) {
+
+            codeResDAO.delete(userName);
+
+            a.setUserName(userName);
+            a.setPassWord(passWord);
+            a.setStatus("onl");
+
+            System.out.print("\tĐăng ký thành công!!! ");
+            accountDAO.insert(a);
+
+        }else{
+            System.out.print("\tNhập mã sai. Đăng ký thất bại!!! ");
+            codeResDAO.delete(userName);
+            return false;
+        }
+        return true;
+    }
+
 
     public void menuLoginAndRegister(){
         boolean stopLogin = false;

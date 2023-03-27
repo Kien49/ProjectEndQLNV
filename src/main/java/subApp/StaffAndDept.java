@@ -14,11 +14,14 @@ public class StaffAndDept {
     private DeptDAO deptDAO = new DeptDAO();
     private Util util = new Util();
 
+
     public void addDeleteStaffofDept(Scanner in){
         List<Department> deptList = deptDAO.getAll();
 
         System.out.print("\t\tNhập mã nhân viên: ");
-        Staff sId = util.checkStaffId(in);
+        int id = util.scannerIdStaff(in);
+        if(id < 1) return;
+        Staff sId = util.checkStaffId(id);
         if(sId == null) return;
         if(sId.getDepartmentId()==0){
             System.out.println("\t\tNhân viên này đang không thuộc phòng ban nào");
@@ -65,12 +68,18 @@ public class StaffAndDept {
         List<Department> deptList = deptDAO.getAll();
 
         System.out.print("\t\tNhập mã nhân viên: ");
-        Staff sId = util.checkStaffId(in);
+        int id = util.scannerIdStaff(in);
+        if(id < 1) return;
+        Staff sId = util.checkStaffId(id);
         if(sId == null) return;
         if(sId.getDepartmentId()==0){
             System.out.println("\t\tNhân viên này đang không thuộc phòng ban nào");
             return;
         }
+        subSwap(sId, deptList, in);
+    }
+
+    public boolean subSwap(Staff sId, List<Department> deptList, Scanner in){
         List<Staff> staffList = staffDAO.innerJoinMemberDept(sId.getDepartmentId());
 
         System.out.println("\t\tNhân viên này đang thuộc phòng ban " + staffList.get(0).getNameDept());
@@ -80,9 +89,9 @@ public class StaffAndDept {
         int numberDept = util.chooseDepartment(in);
         if(numberDept< 0 || numberDept> deptList.size()){
             System.out.println("Lựa chọn không hợp lệ!!!");
-            return;
+            return false;
         }
-        if(numberDept ==0 ) return;
+        if(numberDept ==0 ) return false;
         int idDept = deptList.get(numberDept-1).getDeptId();
         for (int i = 0; i < staffList.size(); i++) {
             if(sId.getStaffId() == staffList.get(i).getLeadDept()){
@@ -93,5 +102,6 @@ public class StaffAndDept {
         sId.setDepartmentId(idDept);
         staffDAO.updateIdDept(sId, sId.getStaffId());
         System.out.println("Nhân viên "+sId.getFullName() +" đã thêm vào phòng ban mới ");
+        return true;
     }
 }

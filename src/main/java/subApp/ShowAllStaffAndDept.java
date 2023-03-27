@@ -58,8 +58,10 @@ public class ShowAllStaffAndDept {
                     }
                     break;
                 case 4:
-                    System.out.print("\tNhập mã nhân viên người bạn cần tìm: ");
-                    Staff sId = util.checkStaffId(in);
+                    System.out.print("\t\tNhập mã nhân viên người bạn cần tìm: ");
+                    int id = util.scannerIdStaff(in);
+                    if(id < 1) return;
+                    Staff sId = util.checkStaffId(id);
                     if(sId == null) return;
                     System.out.println(sId);
                     break;
@@ -68,9 +70,10 @@ public class ShowAllStaffAndDept {
         while (option != 0 );
     }
 
-    public void option2() {
+    public int option2() {
         DeptDAO deptDAO= new DeptDAO();
         List<Department> deptList = deptDAO.getAll();
+        if(deptList.size() ==0) return -1;
         System.out.format("+--------------------------------------------------------+%n");
         System.out.format("|              Tất cả phòng ban trong công ty            |%n");
         String leftAlignFormat = "| %-11d | %-22s | %-15d | %n";
@@ -81,5 +84,6 @@ public class ShowAllStaffAndDept {
             System.out.format(leftAlignFormat, deptList.get(i).getDeptId(), deptList.get(i).getDeptName(), deptList.get(i).getDeptHeadId());
         }
         System.out.format("+-------------+------------------------+-----------------+%n");
+        return deptList.size();
     }
 }

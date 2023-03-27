@@ -28,11 +28,11 @@ public class Util{
             System.out.println("Nhập sai định dạng");
             return -1;
         }
-
         return id;
     }
-    public Staff checkStaffId(Scanner in){
-        Staff sId = staffDAO.getById(scannerIdStaff(in));
+    public Staff checkStaffId(int id){
+
+        Staff sId = staffDAO.getById(id);
         if(sId==null){
             System.out.println("Không có nhân viên này!!!");
             return null;
@@ -40,8 +40,8 @@ public class Util{
         return sId;
     }
 
-    public String checkMailHaveID(Scanner in, Staff sId, List<Staff> staffList){
-        String mail = in.nextLine();
+    public String checkMailHaveID(String mail, Staff sId, List<Staff> staffList){
+
         if(!sId.getMail().equalsIgnoreCase(mail)){
             for (Staff st: staffList) {
                 if(st.getMail().equalsIgnoreCase(mail)){
@@ -60,8 +60,7 @@ public class Util{
         return mail+"@gmail.com";
 
     }
-    public String checkMail(Scanner in, List<Staff> staffList){
-        String mail = in.nextLine();
+    public String checkMail(String mail, List<Staff> staffList){
         for (Staff st: staffList) {
             if(st.getMail().equalsIgnoreCase(mail)){
                 System.out.println("Đã có mail này");
@@ -77,8 +76,7 @@ public class Util{
         }
         return mail+"@gmail.com";
     }
-    public String checkNameScanner(Scanner in){
-        String name = in.nextLine();
+    public String checkNameScanner(String name){
         if(isEmpty(name)){
             System.out.println("Tên không được để trống");
             return null;
@@ -86,9 +84,7 @@ public class Util{
         return name;
     }
 
-    public String checkSdtScanner(Scanner in){
-        System.out.print("\t\tNhập số điện thoại: ");
-        String sdtS = in.nextLine();
+    public String checkSdtScanner(String sdtS){
         int sdtN;
         try {
             sdtN = Integer.parseInt(sdtS);
@@ -108,11 +104,10 @@ public class Util{
         return sdtS;
     }
 
-    public int checkSalaryScanner(Scanner in){
-        System.out.print("\t\t\tNhập lương nhân viên: ");
+    public int checkSalaryScanner(String slaryS){
         int salary;
         try {
-            salary = Integer.parseInt(in.nextLine());
+            salary = Integer.parseInt(slaryS);
 
         } catch (Exception e) {
             System.out.println("Nhập sai định dạng");
@@ -133,20 +128,12 @@ public class Util{
         System.out.println("Nhập sai định dạng!!!");
         return -1;
     }
-    public Date checkDateScanner(Scanner in){
-        System.out.print("\t\t\tNhập lần lượt ngày, tháng, năm gia nhập công ty dd/mm/yy: ");
+    public Date checkDateScanner(String ddS, String mmS, String yyS){
         int dd, mm, yy;
         try {
-            System.out.print("\n\t\t\t\tNgày: ");
-            dd = Integer.parseInt(in.nextLine());
-
-            System.out.print("\t\t\t\tTháng: ");
-            mm = Integer.parseInt(in.nextLine());
-
-            System.out.print("\t\t\t\tNăm: ");
-            yy = Integer.parseInt(in.nextLine());
-
-
+            dd = Integer.parseInt(ddS);
+            mm = Integer.parseInt(mmS);
+            yy = Integer.parseInt(yyS);
         } catch (Exception e) {
             System.out.println("Nhập sai định dạng!!!");
             return null;

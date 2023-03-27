@@ -24,12 +24,14 @@ public class Option3 {
         List<Department> deptList = deptDAO.getAll();
 
         System.out.print("\t\t\tNhập email muốn thêm : ");
-        String mail = util.checkMail(in, staffList);
+        String mailScanner = in.nextLine();
+        String mail = util.checkMail(mailScanner, staffList);
         if(mail == null) return;
         s.setMail(mail);
 
         System.out.print("\t\t\tNhập tên sinh viên: ");
-        String name = util.checkNameScanner(in);
+        String nameScanner = in.nextLine();
+        String name = util.checkNameScanner(nameScanner);
         if(name == null) return;
         s.setFullName(name);
 
@@ -39,15 +41,27 @@ public class Option3 {
         if(numberGender == -1) return;
         s.setGender(numberGender);
 
-        String sdtS = util.checkSdtScanner(in);
+        System.out.print("\t\t\tNhập số điện thoại: ");
+        String sdtScanner = in.nextLine();
+        String sdtS = util.checkSdtScanner(sdtScanner);
         if(sdtS == null) return;
         s.setPhone(sdtS);
 
-        Date date = util.checkDateScanner(in);
+        System.out.print("\t\t\tNhập lần lượt ngày, tháng, năm gia nhập công ty dd/mm/yy: ");
+        String dd, mm, yy;
+        System.out.print("\n\t\t\t\tNgày: ");
+        dd = in.nextLine();
+        System.out.print("\t\t\t\tTháng: ");
+        mm = in.nextLine();
+        System.out.print("\t\t\t\tNăm: ");
+        yy = in.nextLine();
+        Date date = util.checkDateScanner(dd,mm,yy);
         if(date == null) return;
         s.setHireDate(date);
 
-        int salary = util.checkSalaryScanner(in);
+        System.out.print("\t\t\tNhập lương nhân viên: ");
+        String salaryS = in.nextLine();
+        int salary = util.checkSalaryScanner(salaryS);
         if(salary==0) return;
         s.setSalary(salary);
 
@@ -72,8 +86,9 @@ public class Option3 {
     private void fixEmployee(Scanner in){
         List<Staff> staffList = staffDAO.getAll();
         System.out.print("\t\t\tNhập mã nhân viên người bạn cần sửa: ");
-
-        Staff sId = util.checkStaffId(in);
+        int id = util.scannerIdStaff(in);
+        if(id < 1) return;
+        Staff sId = util.checkStaffId(id);
         if(sId == null) return;
         System.out.println("\t\t\tThông tin của nhân viên này: ");
         System.out.println(sId);
@@ -82,12 +97,14 @@ public class Option3 {
         Staff s = new Staff();
 
         System.out.print("\t\tNhập email muốn sửa : ");
-        String mail = util.checkMailHaveID(in, sId, staffList);
+        String mailScanner = in.nextLine();
+        String mail = util.checkMailHaveID(mailScanner, sId, staffList);
         if(mail == null) return;
         s.setMail(mail);
 
         System.out.print("\t\tNhập tên sinh viên: ");
-        String name = util.checkNameScanner(in);
+        String nameScanner = in.nextLine();
+        String name = util.checkNameScanner(nameScanner);
         if(name == null) return;
         s.setFullName(name);
 
@@ -97,15 +114,27 @@ public class Option3 {
         if(numberGender == -1) return;
         s.setGender(numberGender);
 
-        String sdtS = util.checkSdtScanner(in);
+        System.out.print("\t\tNhập số điện thoại: ");
+        String sdtScanner = in.nextLine();
+        String sdtS = util.checkSdtScanner(sdtScanner);
         if(sdtS == null) return;
         s.setPhone(sdtS);
 
-        Date date = util.checkDateScanner(in);
+        System.out.print("\t\t\tNhập lần lượt ngày, tháng, năm gia nhập công ty dd/mm/yy: ");
+        String dd, mm, yy;
+        System.out.print("\n\t\t\t\tNgày: ");
+        dd = in.nextLine();
+        System.out.print("\t\t\t\tTháng: ");
+        mm = in.nextLine();
+        System.out.print("\t\t\t\tNăm: ");
+        yy = in.nextLine();
+        Date date = util.checkDateScanner(dd,mm,yy);
         if(date == null) return;
         s.setHireDate(date);
 
-        int salary = util.checkSalaryScanner(in);
+        System.out.print("\t\t\tNhập lương nhân viên: ");
+        String salaryS = in.nextLine();
+        int salary = util.checkSalaryScanner(salaryS);
         if(salary==0) return;
         s.setSalary(salary);
 
@@ -115,8 +144,9 @@ public class Option3 {
 
     private void deleteEmployee(Scanner in){
         System.out.print("\t\t\tNhập mã nhân viên muốn xóa khỏi công ty: ");
-
-        Staff sId = util.checkStaffId(in);
+        int id = util.scannerIdStaff(in);
+        if(id < 1) return;
+        Staff sId = util.checkStaffId(id);
         if(sId == null) return;
         if(sId.getDepartmentId() == 0){
             staffDAO.delete(sId.getStaffId());
@@ -235,23 +265,23 @@ public class Option3 {
 
         System.out.println("Cập nhật thông tin phòng ban thành công");
     }
-    private void deleteDepartment(Scanner in){
+    public boolean deleteDepartment(Scanner in){
         List<Department> deptList = deptDAO.getAll();
         System.out.println("\t\tDanh phòng ban của công ty");
         System.out.println("0: Thoát");
         int numberDept = util.chooseDepartment(in);
         if(numberDept< 0 || numberDept> deptList.size()){
             System.out.println("Lựa chọn không hợp lệ!!!");
-            return;
+            return false;
         }
-        if(numberDept == 0) return;
+        if(numberDept == 0) return false;
         int idDept = deptList.get(numberDept-1).getDeptId();
 
         List<Staff> staffList = staffDAO.innerJoinMemberDept(idDept);
         if(staffList.size() == 0){
             deptDAO.delete(idDept);
             System.out.print("Xóa phòng ban thành công!");
-            return;
+            return false;
         }
         if(staffList.get(0).getLeadDept() != 0){
             deptDAO.deleteLead(idDept);
@@ -261,6 +291,7 @@ public class Option3 {
         }
         deptDAO.delete(idDept);
         System.out.println("Xóa phòng ban thành công");
+        return true;
     }
     private void department(Scanner in) {
         int option = -1;

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountDAO {
+
     public List<Account> getAll() {
         final String sql = "SELECT * FROM `account`";
 

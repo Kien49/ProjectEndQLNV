@@ -7,6 +7,7 @@ import model.Department;
 import model.Staff;
 import subApp.*;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -19,12 +20,12 @@ public class App {
     private static Util util = new Util();
 
 
-    private static void taxOfStaff(Scanner in){
-        System.out.print("\t\tNhập mã nhân viên người bạn cần xem thuế: ");
-        Staff sId = util.checkStaffId(in);
-        if(sId == null) return;
+    public static double taxOfStaff(Scanner in, int id){
+        if(id < 1) return -1;
+        Staff sId = util.checkStaffId(id);
+        if(sId == null) return -1;
         System.out.print("\t\tNhập thu nhập ngoài của người này: ");
-        double thuNhapNgoai = 0;
+        int thuNhapNgoai = 0;
         try {
             thuNhapNgoai = Integer.parseInt(in.nextLine());
 
@@ -36,7 +37,7 @@ public class App {
             thuNhapNgoai =0;
         }
 
-        double tax = 0.2 * (sId.getSalary() + thuNhapNgoai);
+        double tax = 0.02 * (sId.getSalary() + thuNhapNgoai);
         System.out.format("+-------------------------------------------------------------+%n");
         System.out.format("|                      Thuế của nhân viên                     |%n");
         String leftAlignFormat = "| %-16s | %-12d | %-12d | %-10.1f |%n";
@@ -45,9 +46,10 @@ public class App {
         System.out.format("+------------------+--------------+--------------+------------+%n");
         System.out.format(leftAlignFormat, sId.getFullName(), sId.getDepartmentId(), sId.getSalary(), tax);
         System.out.format("+------------------+--------------+--------------+------------+%n");
+        return tax;
     }
 
-    private static void showLeadDepartment(Scanner in){
+    public static int showLeadDepartment(){
         System.out.format("+----------------------------------------------------------------------------------------+%n");
         System.out.format("|                              Tất cả trưởng phòng của công ty                           |%n");
         String leftAlignFormat = "| %-12d | %-19s | %-12d | %-21s | %-10d |%n";
@@ -56,10 +58,12 @@ public class App {
         System.out.format("+--------------+---------------------+--------------+-----------------------+------------+%n");
 
         List<Department> deptListInnerJoin = deptDAO.innerJoinIn4HeadDept();
+        if(deptListInnerJoin.size() == 0) return -1;
         for (int i = 0; i < deptListInnerJoin.size(); i++) {
             System.out.format(leftAlignFormat, deptListInnerJoin.get(i).getDeptHeadId(), deptListInnerJoin.get(i).getNameLead(),deptListInnerJoin.get(i).getDeptId(), deptListInnerJoin.get(i).getDeptName(), deptListInnerJoin.get(i).getSalaryLead());
         }
         System.out.format("+--------------+---------------------+--------------+-----------------------+------------+%n");
+        return deptListInnerJoin.size();
     }
 
 
@@ -79,6 +83,22 @@ public class App {
     }
 
     public static void main(String[] args) {
+/*        Scanner in = new Scanner(System.in);
+        System.out.print("\t\t\tNhập lần lượt ngày, tháng, năm gia nhập công ty dd/mm/yy: ");
+        String dd, mm, yy;
+        System.out.print("\n\t\t\t\tNgày: ");
+        dd = in.nextLine();
+        System.out.print("\t\t\t\tTháng: ");
+        mm = in.nextLine();
+        System.out.print("\t\t\t\tNăm: ");
+        yy = in.nextLine();
+        Date date = util.checkDateScanner(dd,mm,yy);
+        if(date == null) return;
+        System.out.println(date);
+        DateFormat dateFormat = null;
+        dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        String tmp = dateFormat.format(date);
+        System.out.println(tmp);*/
 
         //Login and Register
         LoginAndRegister logAndReg = new LoginAndRegister();
@@ -91,7 +111,6 @@ public class App {
         Option3 option3 = new Option3();
         MemberDept memberDept = new MemberDept();
         StaffAndDept sAD = new StaffAndDept();
-
 
         if(loginSuccess){
             Scanner in = new Scanner(System.in);
@@ -127,7 +146,10 @@ public class App {
                         sAD.swapDept(in);
                         break;
                     case 6:
-                        taxOfStaff(in);
+                        System.out.print("\t\tNhập mã nhân viên người bạn cần xem thuế: ");
+                        int id = util.scannerIdStaff(in);
+                        double tax = taxOfStaff(in, id);
+                        if(tax < 0) break;
                         break;
                     case 7:
                         List<Staff> lastListHireDate =  staffDAO.lastHireDate();
@@ -135,11 +157,11 @@ public class App {
                             System.out.println(s);
                         }
                         break;
-                    case 8:         //done
+                    case 8:
                         memberDept.memberDepartment(in);
                         break;
-                    case 9:         //done
-                        showLeadDepartment(in);
+                    case 9:
+                        showLeadDepartment();
                         break;
                 }
             }
