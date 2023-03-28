@@ -153,8 +153,20 @@ public class App {
                         break;
                     case 7:
                         List<Staff> lastListHireDate =  staffDAO.lastHireDate();
-                        for (Staff s: lastListHireDate) {
-                            System.out.println(s);
+                        System.out.printf("%-10s %-30s %-10s %-30s %-20s %-20s %-10s %-10s", "Mã ", "Tên", "Giới tính", "Mail", "Phone","Ngày gia nhập", "Lương", "Mã phòng ban");
+                        System.out.println();
+                        for (int i = 0; i < lastListHireDate.size(); i++) {
+                            Staff s = lastListHireDate.get(i);
+
+                            DateFormat dateFormat = null;
+                            dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            String tmp = dateFormat.format(s.getHireDate());
+
+                            String gender = null;
+                            if(s.getGender() ==1 ) gender = "Nam";
+                            if(s.getGender() ==0 ) gender = "Nữ";
+
+                            System.out.printf("%-10d %-30s %-10s %-30s %-20s %-20s %-10d %-10d \n", s.getStaffId(), s.getFullName(), gender, s.getMail(), s.getPhone(), tmp, s.getSalary(), s.getDepartmentId());
                         }
                         break;
                     case 8:

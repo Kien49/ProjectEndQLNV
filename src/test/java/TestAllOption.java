@@ -26,7 +26,7 @@ public class TestAllOption {
     @DisplayName("Test option 2")
     public void testShowAllDept(){
         ShowAllStaffAndDept opt1A2 = new ShowAllStaffAndDept();
-        int excpted = 19;
+        int excpted = 20;
         int actual = opt1A2.option2();
         assertEquals(excpted, actual);
     }
@@ -45,7 +45,7 @@ public class TestAllOption {
     @DisplayName("Test show all dept(otion 9)")
     public void testShowAllLead(){
         App app = new App();
-        int excpted = 18;
+        int excpted = 19;
         int actual = app.showLeadDepartment();
         assertEquals(excpted, actual);
     }

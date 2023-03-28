@@ -20,7 +20,6 @@ public class LoginAndRegister {
     private boolean statusOff = false;
 
     private void login(Scanner in) {
-        List<Account> accountList = accountDAO.getAll();
 
         String userName = "";
         String passWord = "";

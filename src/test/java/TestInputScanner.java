@@ -15,6 +15,16 @@ public class TestInputScanner {
     private Util util = new Util();
 
     @Test
+    @DisplayName("Test mail khi thêm nhân viên")
+    public void testMail(){
+        StaffDAO staffDAO = new StaffDAO();
+        List<Staff> staffList = staffDAO.getAll();
+        String mail = "123";
+        String excptedMail = "123@gmail.com";
+        String actualMail = util.checkMail(mail, staffList);
+        assertEquals(excptedMail, actualMail);
+    }
+    @Test
     @DisplayName("Test mail khi sửa thông tin nhân viên")
     public void testMail1(){
         StaffDAO staffDAO = new StaffDAO();

@@ -59,16 +59,20 @@ public class MemberDept {
                     }
                     System.out.format("+----------------------------------------------------------------------------------------------------------------------------------------------------+%n");
                     System.out.format("|                                                        Tất cả nhân viên trong phòng ban                                                            |%n");
-                    String leftAlignFormat = "| %-11d | %-22s | %-9d | %-28s | %-25s | %-21s | %-12d | %n";
+                    String leftAlignFormat = "| %-11d | %-22s | %-9s | %-28s | %-25s | %-21s | %-12d | %n";
                     System.out.format("+-------------+------------------------+-----------+------------------------------+---------------------------+-----------------------+--------------+%n");
                     System.out.format("|Mã nhân viên |     Tên nhân viên      | Giới tính |             Mail             |       Số điện thoại       |        Ngày vào       |    Lương     |%n");
                     System.out.format("+-------------+------------------------+-----------+------------------------------+---------------------------+-----------------------+--------------+%n");
                     for (int i = 0; i < staffList.size(); i++) {
                         DateFormat dateFormat = null;
-                        dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                         String tmp = dateFormat.format(staffList.get(i).getHireDate());
 
-                        System.out.format(leftAlignFormat, staffList.get(i).getStaffId(), staffList.get(i).getFullName(), staffList.get(i).getGender(),
+                        String gender = null;
+                        if(staffList.get(i).getGender() ==1 ) gender = "Nam";
+                        if(staffList.get(i).getGender() ==0 ) gender = "Nữ";
+
+                        System.out.format(leftAlignFormat, staffList.get(i).getStaffId(), staffList.get(i).getFullName(), gender,
                                 staffList.get(i).getMail(), staffList.get(i).getPhone(), tmp , staffList.get(i).getSalary());
                     }
                     System.out.format("+-------------+------------------------+-----------+------------------------------+---------------------------+-----------------------+--------------+%n");

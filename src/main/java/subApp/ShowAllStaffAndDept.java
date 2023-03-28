@@ -5,6 +5,8 @@ import dao.StaffDAO;
 import model.Department;
 import model.Staff;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
@@ -39,8 +41,20 @@ public class ShowAllStaffAndDept {
             switch (option) {
                 case 1:
                     System.out.println("Danh sách và thông tin tất cả nhân viên trong công ty");
+                    System.out.printf("%-10s %-30s %-10s %-30s %-20s %-20s %-10s %-10s", "Mã ", "Tên", "Giới tính", "Mail", "Phone","Ngày gia nhập", "Lương", "Mã phòng ban");
+                    System.out.println();
                     for (int i = 0; i < staffList.size(); i++) {
-                        System.out.println(staffList.get(i));
+                        Staff s = staffList.get(i);
+
+                        DateFormat dateFormat = null;
+                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String tmp = dateFormat.format(s.getHireDate());
+
+                        String gender = null;
+                        if(s.getGender() ==1 ) gender = "Nam";
+                        if(s.getGender() ==0 ) gender = "Nữ";
+
+                        System.out.printf("%-10d %-30s %-10s %-30s %-20s %-20s %-10d %-10d \n", s.getStaffId(), s.getFullName(), gender, s.getMail(), s.getPhone(), tmp, s.getSalary(), s.getDepartmentId());
                     }
                     break;
                 case 2:
@@ -53,8 +67,20 @@ public class ShowAllStaffAndDept {
                 case 3:
                     System.out.println("Danh sách và thông tin tất cả nhân viên trong công ty");
                     Collections.sort(staffList);
-                    for (Staff s: staffList) {
-                        System.out.println(s);
+                    System.out.printf("%-10s %-30s %-10s %-30s %-20s %-20s %-10s %-10s", "Mã ", "Tên", "Giới tính", "Mail", "Phone","Ngày gia nhập", "Lương", "Mã phòng ban");
+                    System.out.println();
+                    for (int i = 0; i < staffList.size(); i++) {
+                        Staff s = staffList.get(i);
+
+                        DateFormat dateFormat = null;
+                        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String tmp = dateFormat.format(s.getHireDate());
+
+                        String gender = null;
+                        if(s.getGender() ==1 ) gender = "Nam";
+                        if(s.getGender() ==0 ) gender = "Nữ";
+
+                        System.out.printf("%-10d %-30s %-10s %-30s %-20s %-20s %-10d %-10d \n", s.getStaffId(), s.getFullName(), gender, s.getMail(), s.getPhone(), tmp, s.getSalary(), s.getDepartmentId());
                     }
                     break;
                 case 4:

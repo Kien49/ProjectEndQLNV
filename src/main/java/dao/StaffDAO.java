@@ -115,6 +115,7 @@ public class StaffDAO {
         }
     }
 
+    //set tat ca khong set dept_id cua staff
     public void updateIdDeptNull(Staff s, int id) {
         Staff tmp = getById(id);
         if (tmp == null) {
@@ -165,6 +166,7 @@ public class StaffDAO {
         }
     }
 
+    //chi set dept_id cua staff
     public void updateIdDept(Staff s, int id) {
         Staff tmp = getById(id);
         if (tmp == null) {
@@ -172,9 +174,6 @@ public class StaffDAO {
             return;
         }
         try {
-            DateFormat dateFormat = null;
-            dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-            String tmpS = dateFormat.format(s.getHireDate());
 
             Connection conn = MyConnection.getConnection();
             String sql = String.format("UPDATE `staff` SET `department_id` = '%d'  WHERE `staff_id` = '%d'",

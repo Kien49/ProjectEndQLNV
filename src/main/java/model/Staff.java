@@ -13,13 +13,6 @@ public class Staff implements Comparable<Staff>{
     private int departmentId;
     private int status;
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
     //inner join
     private String nameDept;

@@ -5,6 +5,7 @@ import dao.StaffDAO;
 import model.Department;
 import model.Staff;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -90,8 +91,20 @@ public class Option3 {
         if(id < 1) return;
         Staff sId = util.checkStaffId(id);
         if(sId == null) return;
+
         System.out.println("\t\t\tThông tin của nhân viên này: ");
-        System.out.println(sId);
+        String gender1 = null;
+        if(sId.getGender() ==1 ) gender1= "Nam";
+        if(sId.getGender() ==0 ) gender1 = "Nữ";
+        DateFormat dateFormat = null;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String tmp = dateFormat.format(sId.getHireDate());
+        System.out.println();
+        System.out.printf("%-10s %-30s %-10s %-30s %-20s %-20s %-10s %-10s", "Mã ", "Tên", "Giới tính", "Mail", "Phone","Ngày gia nhập", "Lương", "Mã phòng ban");
+        System.out.println();
+        System.out.printf("%-10d %-30s %-10s %-30s %-20s %-20s %-10d %-10d \n", sId.getStaffId(), sId.getFullName(), gender1, sId.getMail(), sId.getPhone(), tmp, sId.getSalary(), sId.getDepartmentId());
+        System.out.println();
+
         System.out.println("\tNhập thông tin mới cho nhân viên!");
 
         Staff s = new Staff();

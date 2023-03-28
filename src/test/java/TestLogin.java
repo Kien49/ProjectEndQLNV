@@ -42,16 +42,7 @@ public class TestLogin {
         assertEquals(expectedValue, actualValue);
     }
 
-    @Test
-    @DisplayName("Test mail khi thêm nhân viên")
-    public void testMail(){
-        StaffDAO staffDAO = new StaffDAO();
-        List<Staff> staffList = staffDAO.getAll();
-        String mail = "123";
-        String excptedMail = "123@gmail.com";
-        String actualMail = util.checkMail(mail, staffList);
-        assertEquals(excptedMail, actualMail);
-    }
+
 
 
 
